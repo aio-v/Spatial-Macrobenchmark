@@ -555,12 +555,12 @@ public class MongoDbClient extends GeoDB {
       if(geoLoad(table1, generator) == Status.ERROR) {
         return Status.ERROR;
       }
-      if(geoLoad(table2, generator) == Status.ERROR) {
-        return Status.ERROR;
-      }
-      if(geoLoad(table3, generator) == Status.ERROR) {
-        return Status.ERROR;
-      }
+//      if(geoLoad(table2, generator) == Status.ERROR) {
+//        return Status.ERROR;
+//      }
+//      if(geoLoad(table3, generator) == Status.ERROR) {
+//        return Status.ERROR;
+//      }
       generator.incrementSynthesisOffset();
       
       return Status.OK;
