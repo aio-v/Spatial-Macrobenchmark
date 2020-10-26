@@ -383,7 +383,7 @@ public class GeoDBWrapper extends GeoDB {
   
   public Status geoUseCase2(String table, 
       HashMap<String, Vector<HashMap<String, ByteIterator>>> result, ParameterGenerator generator) {
-//    generator.buildGeoPredicateCase3();
+    generator.buildGeoPredicateCase3();
     try (final TraceScope span = tracer.newScope(scopeStringRead)) {
       long ist = measurements.getIntendedtartTimeNs();
       long st = System.nanoTime();

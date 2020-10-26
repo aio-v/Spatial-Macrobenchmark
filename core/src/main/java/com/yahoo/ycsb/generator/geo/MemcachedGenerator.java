@@ -61,7 +61,6 @@ public class MemcachedGenerator extends ParameterGenerator {
       String totalDocs1, String totalDocs2, String totalDocs3) throws Exception {
     super(p);
     try {
-      
       /* Incidents collection */
       client = createMemcachedClient(memHost, Integer.parseInt(memPort));
       String prefix = GEO_DOCUMENT_PREFIX_INCIDENTS + GEO_SYSTEMFIELD_DELIMITER;

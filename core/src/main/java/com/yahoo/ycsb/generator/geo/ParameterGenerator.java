@@ -122,21 +122,21 @@ public abstract class ParameterGenerator {
   private final Map<String, Set<String>> allGeoFields = new HashMap<String, Set<String>>() {{
       put(GEO_DOCUMENT_PREFIX_INCIDENTS, new HashSet<String>() {{
           add(GEO_FIELD_INCIDENTS_ID);
-          add(GEO_FIELD_INCIDENTS_TYPE);
-          add(GEO_FIELD_INCIDENTS_PROPERTIES);
-          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_OBJECTID);
-          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_INCIDENT_NUMBER);
-          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_LOCATION);
-          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_NOTIFICATION);
-          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_INCIDENT_DATE);
-          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_TAG_COUNT);
-          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_MONIKER_CLASS);
-          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_SQ_FT);
-          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_PROP_TYPE);
-          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_WAIVER);
-          add(GEO_FIELD_INCIDENTS_GEOMETRY);
-          add(GEO_FIELD_INCIDENTS_GEOMETRY_OBJ_TYPE);
-          add(GEO_FIELD_INCIDENTS_GEOMETRY_OBJ_COORDINATES);
+//          add(GEO_FIELD_INCIDENTS_TYPE);
+//          add(GEO_FIELD_INCIDENTS_PROPERTIES);
+//          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_OBJECTID);
+//          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_INCIDENT_NUMBER);
+//          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_LOCATION);
+//          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_NOTIFICATION);
+//          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_INCIDENT_DATE);
+//          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_TAG_COUNT);
+//          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_MONIKER_CLASS);
+//          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_SQ_FT);
+//          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_PROP_TYPE);
+//          add(GEO_FIELD_INCIDENTS_PROPERTIES_OBJ_WAIVER);
+//          add(GEO_FIELD_INCIDENTS_GEOMETRY);
+//          add(GEO_FIELD_INCIDENTS_GEOMETRY_OBJ_TYPE);
+//          add(GEO_FIELD_INCIDENTS_GEOMETRY_OBJ_COORDINATES);
         }});
       put(GEO_DOCUMENT_PREFIX_SCHOOLS, new HashSet<String>() {{
           add(GEO_FIELD_SCHOOLS_ID);
@@ -151,24 +151,24 @@ public abstract class ParameterGenerator {
         }});
       put(GEO_DOCUMENT_PREFIX_BUILDINGS, new HashSet<String>() {{
           add(GEO_FIELD_BUILDINGS_ID);
-          add(GEO_FIELD_BUILDINGS_TYPE);
+//          add(GEO_FIELD_BUILDINGS_TYPE);
           add(GEO_FIELD_BUILDINGS_PROPERTIES);
-          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_OBJECTID);
-          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_TOPELEV_M);
-          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_BASEELEV_M);
-          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_MED_SLOPE);
-          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_ROOFTYPE);
-          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_AVGHT_M);
-          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_BASE_M);
-          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_ORIENT8);
-          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_LEN);
-          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_WID);
-          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_GLOBALID);
+//          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_OBJECTID);
+//          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_TOPELEV_M);
+//          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_BASEELEV_M);
+//          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_MED_SLOPE);
+//          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_ROOFTYPE);
+//          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_AVGHT_M);
+//          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_BASE_M);
+//          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_ORIENT8);
+//          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_LEN);
+//          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_WID);
+//          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_GLOBALID);
           add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_SHAPE_AREA);
-          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_SHAPE_LENGTH);
-          add(GEO_FIELD_BUILDINGS_GEOMETRY);
-          add(GEO_FIELD_BUILDINGS_GEOMETRY_OBJ_TYPE);
-          add(GEO_FIELD_BUILDINGS_GEOMETRY_OBJ_COORDINATES);
+//          add(GEO_FIELD_BUILDINGS_PROPERTIES_OBJ_SHAPE_LENGTH);
+//          add(GEO_FIELD_BUILDINGS_GEOMETRY);
+//          add(GEO_FIELD_BUILDINGS_GEOMETRY_OBJ_TYPE);
+//          add(GEO_FIELD_BUILDINGS_GEOMETRY_OBJ_COORDINATES);
         }});
     }};
 
@@ -1082,11 +1082,43 @@ public abstract class ParameterGenerator {
    * Builds the predicates necessary for use case 1.
    */
   public void buildGeoPredicateCase1() {
+    if(geometryPredicatesList != null) {
+      return;
+    }
     geometryPredicatesList = new ArrayList<DataFilter>();
     
     // Create list of all schools to bulk get
     ArrayList<String> keys = new ArrayList<String>();
+    Random random = new Random();
     int docCount = getTotalDocsCount(GEO_DOCUMENT_PREFIX_SCHOOLS) * synthesisOffsetMax * synthesisOffsetMax;
+//    
+////    for(int i = 0; i < 3; i++) {
+//    int nextSchool = random.nextInt(2754);
+//    String key = GEO_DOCUMENT_PREFIX_SCHOOLS + GEO_SYSTEMFIELD_DELIMITER 
+//        + GEO_METAFIELD_INSERTDOC + GEO_SYSTEMFIELD_DELIMITER + nextSchool;
+//    String val = getVal(key);
+//
+//    // parse document - get geometry
+//    DataFilter queryPredicate = new DataFilter();
+//    queryPredicate.setName(GEO_FIELD_SCHOOLS_GEOMETRY);
+//    JSONObject obj = new JSONObject(val);
+//    JSONObject jobj = (JSONObject) obj.get(GEO_FIELD_SCHOOLS_GEOMETRY);
+//    queryPredicate.setValueA(jobj);
+//
+//    // original school document
+//    DataFilter schoolPredicate = new DataFilter();
+////    schoolPredicate.setDocid(key);
+////    schoolPredicate.setValue(val);
+//    schoolPredicate.setName(((JSONObject)obj.get(GEO_FIELD_SCHOOLS_PROPERTIES)).
+//        getString(GEO_FIELD_SCHOOLS_PROPERTIES_OBJ_NAME));
+//    // attach specific query predicate
+//    schoolPredicate.setNestedPredicateA(queryPredicate);
+//    
+//    System.out.println(queryPredicate.getValueA());
+//
+//    // add school to list
+//    geometryPredicatesList.add(schoolPredicate);
+//    }
     
     for(int i = 1; i <= docCount; i++) {
       keys.add(GEO_DOCUMENT_PREFIX_SCHOOLS + GEO_SYSTEMFIELD_DELIMITER 
@@ -1120,8 +1152,8 @@ public abstract class ParameterGenerator {
       // add school to list
       geometryPredicatesList.add(schoolPredicate);
     }
-    // randomize the ordering of schools
-    Collections.shuffle(geometryPredicatesList);
+    // randomize order
+    Collections.shuffle(geometryPredicatesList, random);
   }
   
   /**
@@ -1171,6 +1203,8 @@ public abstract class ParameterGenerator {
         geometryPredicatesList.add(queryPredicate);
       }
     }
+    // randomize order
+    Collections.shuffle(geometryPredicatesList, new Random());
   }
   
   public ArrayList<DataFilter> getGeometryPredicatesList() {

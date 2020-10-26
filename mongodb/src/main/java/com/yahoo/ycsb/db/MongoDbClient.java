@@ -50,7 +50,6 @@ import org.bson.Document;
 import org.bson.types.Binary;
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.*;
@@ -113,373 +112,373 @@ public class MongoDbClient extends GeoDB {
   /** The bulk inserts pending for the thread. */
   private final List<Document> bulkInserts = new ArrayList<Document>();
   
-  /** Hardcoded for use case 4, tester. */
-  private ObjectId[] toDelete = {
-      new ObjectId("5e5cce19267fe36af71b0d07"),
-      new ObjectId("5e5cce19267fe36af71b0dc8"),
-      new ObjectId("5e5cce19267fe36af71b0d2d"),
-      new ObjectId("5e5cce18267fe36af71b0cdf"),
-      new ObjectId("5e5cce19267fe36af71b0d50"),
-      new ObjectId("5e5cce19267fe36af71b0d78"),
-      new ObjectId("5e5cc52f267fe36af718e60d"),
-      new ObjectId("5e5cc52e267fe36af718e5e1"),
-      new ObjectId("5e5cce18267fe36af71b0bc9"),
-      new ObjectId("5e5cce19267fe36af71b0d9f"),
-      new ObjectId("5e5cc530267fe36af718e636"),
-      new ObjectId("5e5cc53f267fe36af718e840"),
-      new ObjectId("5e5ccef7267fe36af71ccd77"),
-      new ObjectId("5e5ccecb267fe36af71c72dc"),
-      new ObjectId("5e5ccc87267fe36af719d74f"),
-      new ObjectId("5e5ccde6267fe36af71aa5ad"),
-      new ObjectId("5e5ccdbf267fe36af71a5611"),
-      new ObjectId("5e5cc924267fe36af7196abb"),
-      new ObjectId("5e5cc98f267fe36af71978f8"),
-      new ObjectId("5e5cce19267fe36af71b0ded"),
-      new ObjectId("5e5cc990267fe36af7197910"),
-      new ObjectId("5e5cc991267fe36af719793a"),
-      new ObjectId("5e5cc541267fe36af718e89e"),
-      new ObjectId("5e5ccd98267fe36af71a0556"),
-      new ObjectId("5e5cce2d267fe36af71b371c"),
-      new ObjectId("5e5ccf79267fe36af71dcca1"),
-      new ObjectId("5e5ccfb7267fe36af71e4c2c"),
-      new ObjectId("5e5ccf77267fe36af71dc9ed"),
-      new ObjectId("5e5ccc72267fe36af719d4a2"),
-      new ObjectId("5e5ccfa2267fe36af71e219f"),
-      new ObjectId("5e5ccc71267fe36af719d478"),
-      new ObjectId("5e5cd066267fe36af71faf98"),
-      new ObjectId("5e5ccf78267fe36af71dca1c"),
-      new ObjectId("5e5cd07b267fe36af71fda21"),
-      new ObjectId("5e5cc540267fe36af718e86f"),
-      new ObjectId("5e5cd07b267fe36af71fda41"),
-      new ObjectId("5e5ccc1c267fe36af719c9f1"),
-      new ObjectId("5e5ccc80267fe36af719d65f"),
-      new ObjectId("5e5ccc7f267fe36af719d638"),
-      new ObjectId("5e5cce18267fe36af71b0c64"),
-      new ObjectId("5e5cce1a267fe36af71b1029"),
-      new ObjectId("5e5cce18267fe36af71b0c3b"),
-      new ObjectId("5e5cc531267fe36af718e666"),
-      new ObjectId("5e5cbd6f267fe36af717c738"),
-      new ObjectId("5e5cce18267fe36af71b0bee"),
-      new ObjectId("5e5ccdd0267fe36af71a77fa"),
-      new ObjectId("5e5cce8e267fe36af71bfdae"),
-      new ObjectId("5e5ccf73267fe36af71dc163"),
-      new ObjectId("5e5cceb1267fe36af71c44b6"),
-      new ObjectId("5e5cce2e267fe36af71b3859"),
-      new ObjectId("5e5cc02a267fe36af7183082"),
-      new ObjectId("5e5ccf73267fe36af71dc13c"),
-      new ObjectId("5e5cd07b267fe36af71fdaca"),
-      new ObjectId("5e5ccdbf267fe36af71a563d"),
-      new ObjectId("5e5cd07b267fe36af71fdaec"),
-      new ObjectId("5e5cd07b267fe36af71fdaa7"),
-      new ObjectId("5e5cc069267fe36af7183994"),
-      new ObjectId("5e5cd07c267fe36af71fdb30"),
-      new ObjectId("5e5cd07c267fe36af71fdb0e"),
-      new ObjectId("5e5cce18267fe36af71b0c15"),
-      new ObjectId("5e5ccfa8267fe36af71e2d98"),
-      new ObjectId("5e5ccea3267fe36af71c276c"),
-      new ObjectId("5e5ccfc1267fe36af71e608c"),
-      new ObjectId("5e5cd07b267fe36af71fda86"),
-      new ObjectId("5e5cd07b267fe36af71fda63"),
-      new ObjectId("5e5ccf24267fe36af71d2155"),
-      new ObjectId("5e5cce47267fe36af71b6d27"),
-      new ObjectId("5e5ccfcb267fe36af71e7507"),
-      new ObjectId("5e5cc0a4267fe36af718420e"),
-      new ObjectId("5e5ccfc7267fe36af71e6c30"),
-      new ObjectId("5e5cc7dc267fe36af719421c"),
-      new ObjectId("5e5ccf24267fe36af71d2182"),
-      new ObjectId("5e5cd068267fe36af71fb381"),
-      new ObjectId("5e5ccf3f267fe36af71d5860"),
-      new ObjectId("5e5ccf3f267fe36af71d57c4"),
-      new ObjectId("5e5ccfcb267fe36af71e752f"),
-      new ObjectId("5e5cc948267fe36af7196f7d"),
-      new ObjectId("5e5cd05f267fe36af71fa121"),
-      new ObjectId("5e5ccece267fe36af71c7948"),
-      new ObjectId("5e5ccecb267fe36af71c72b2"),
-      new ObjectId("5e5cbdd1267fe36af717d616"),
-      new ObjectId("5e5cce47267fe36af71b6c1a"),
-      new ObjectId("5e5ccf2a267fe36af71d2ce5"),
-      new ObjectId("5e5cc497267fe36af718d11f"),
-      new ObjectId("5e5cc7db267fe36af71941f0"),
-      new ObjectId("5e5cce47267fe36af71b6bf1"),
-      new ObjectId("5e5cce02267fe36af71adf3a"),
-      new ObjectId("5e5cce02267fe36af71adf0f"),
-      new ObjectId("5e5cce1a267fe36af71b1003"),
-      new ObjectId("5e5cd071267fe36af71fc6f1"),
-      new ObjectId("5e5ccece267fe36af71c7a63"),
-      new ObjectId("5e5cce1a267fe36af71b0f8e"),
-      new ObjectId("5e5ccfd0267fe36af71e7f8c"),
-      new ObjectId("5e5cbe8e267fe36af717f311"),
-      new ObjectId("5e5cc484267fe36af718ce5b"),
-      new ObjectId("5e5cc1c1267fe36af7186988"),
-      new ObjectId("5e5ccc84267fe36af719d6d2"),
-      new ObjectId("5e5ccfd0267fe36af71e7f68"),
-      new ObjectId("5e5cc3d8267fe36af718b645"),
-      new ObjectId("5e5ccdea267fe36af71aaebc"),
-      new ObjectId("5e5cbe8f267fe36af717f333"),
-      new ObjectId("5e5cc162267fe36af7185c35"),
-      new ObjectId("5e5cce01267fe36af71adceb"),
-      new ObjectId("5e5cce01267fe36af71adcc2"),
-      new ObjectId("5e5cbe80267fe36af717f0f3"),
-      new ObjectId("5e5cce48267fe36af71b6d78"),
-      new ObjectId("5e5ccece267fe36af71c7920"),
-      new ObjectId("5e5ccc83267fe36af719d6bb"),
-      new ObjectId("5e5ccdc3267fe36af71a5e7a"),
-      new ObjectId("5e5cbe8f267fe36af717f340"),
-      new ObjectId("5e5cbe7f267fe36af717f0c5"),
-      new ObjectId("5e5cd051267fe36af71f8590"),
-      new ObjectId("5e5ccfd0267fe36af71e7fb5"),
-      new ObjectId("5e5cbe7f267fe36af717f0bb"),
-      new ObjectId("5e5cca45267fe36af7198f59"),
-      new ObjectId("5e5cbe9c267fe36af717f535"),
-      new ObjectId("5e5cbe7e267fe36af717f08d"),
-      new ObjectId("5e5ccecd267fe36af71c77bd"),
-      new ObjectId("5e5cca47267fe36af7198f85"),
-      new ObjectId("5e5cd07c267fe36af71fdb54"),
-      new ObjectId("5e5cbe9a267fe36af717f50b"),
-      new ObjectId("5e5ccf56267fe36af71d851a"),
-      new ObjectId("5e5ccf2c267fe36af71d3189"),
-      new ObjectId("5e5cc170267fe36af7185e31"),
-      new ObjectId("5e5cce47267fe36af71b6c42"),
-      new ObjectId("5e5cc075267fe36af7183b52"),
-      new ObjectId("5e5cc346267fe36af718a152"),
-      new ObjectId("5e5cbe99267fe36af717f4de"),
-      new ObjectId("5e5cbed7267fe36af717fe7d"),
-      new ObjectId("5e5cc744267fe36af7192d75"),
-      new ObjectId("5e5cc16f267fe36af7185e02"),
-      new ObjectId("5e5cd079267fe36af71fd5e7"),
-      new ObjectId("5e5cc7ff267fe36af71946e6"),
-      new ObjectId("5e5ccfd0267fe36af71e7f40"),
-      new ObjectId("5e5cd079267fe36af71fd69c"),
-      new ObjectId("5e5cc16d267fe36af7185dd2"),
-      new ObjectId("5e5ccecd267fe36af71c76de"),
-      new ObjectId("5e5cc160267fe36af7185c06"),
-      new ObjectId("5e5ccdf3267fe36af71ac079"),
-      new ObjectId("5e5ccb2a267fe36af719ab87"),
-      new ObjectId("5e5ccfd6267fe36af71e8b48"),
-      new ObjectId("5e5cd068267fe36af71fb32f"),
-      new ObjectId("5e5ccfb8267fe36af71e4d8e"),
-      new ObjectId("5e5cbe8d267fe36af717f2e1"),
-      new ObjectId("5e5ccff0267fe36af71ec09c"),
-      new ObjectId("5e5cbe6f267fe36af717ee47"),
-      new ObjectId("5e5ccda3267fe36af71a1bb2"),
-      new ObjectId("5e5cbe9c267fe36af717f548"),
-      new ObjectId("5e5cd068267fe36af71fb357"),
-      new ObjectId("5e5ccecf267fe36af71c7b92"),
-      new ObjectId("5e5cce1a267fe36af71b0fdd"),
-      new ObjectId("5e5ccdb6267fe36af71a440c"),
-      new ObjectId("5e5ccf24267fe36af71d21a6"),
-      new ObjectId("5e5ccc82267fe36af719d68b"),
-      new ObjectId("5e5ccf56267fe36af71d84ec"),
-      new ObjectId("5e5cc7fe267fe36af71946bf"),
-      new ObjectId("5e5ccda3267fe36af71a1bd6"),
-      new ObjectId("5e5cbe6e267fe36af717ee18"),
-      new ObjectId("5e5ccc85267fe36af719d6ff"),
-      new ObjectId("5e5ccfcb267fe36af71e74df"),
-      new ObjectId("5e5cbe8c267fe36af717f2c9"),
-      new ObjectId("5e5cd04d267fe36af71f7ca7"),
-      new ObjectId("5e5cc00f267fe36af7182cca"),
-      new ObjectId("5e5cc0a3267fe36af71841e0"),
-      new ObjectId("5e5ccfcb267fe36af71e74b8"),
-      new ObjectId("5e5ccecd267fe36af71c7809"),
-      new ObjectId("5e5cd04d267fe36af71f7c83"),
-      new ObjectId("5e5cbe28267fe36af717e36f"),
-      new ObjectId("5e5cd017267fe36af71f103a"),
-      new ObjectId("5e5cc0a2267fe36af71841b5"),
-      new ObjectId("5e5ccf2a267fe36af71d2cc0"),
-      new ObjectId("5e5cc5d8267fe36af718fcf1"),
-      new ObjectId("5e5cce1a267fe36af71b10c6"),
-      new ObjectId("5e5cd01f267fe36af71f2085"),
-      new ObjectId("5e5ccfb8267fe36af71e4db7"),
-      new ObjectId("5e5cce72267fe36af71bc35a"),
-      new ObjectId("5e5ccfc1267fe36af71e60b8"),
-      new ObjectId("5e5cd07c267fe36af71fdc13"),
-      new ObjectId("5e5ccf79267fe36af71dccc9"),
-      new ObjectId("5e5cd07c267fe36af71fdb76"),
-      new ObjectId("5e5cce70267fe36af71bc087"),
-      new ObjectId("5e5ccc86267fe36af719d726"),
-      new ObjectId("5e5ccf7d267fe36af71dd4c7"),
-      new ObjectId("5e5ccfe6267fe36af71eac48"),
-      new ObjectId("5e5cbe74267fe36af717ef13"),
-      new ObjectId("5e5cbe7d267fe36af717f07d"),
-      new ObjectId("5e5cce02267fe36af71adec4"),
-      new ObjectId("5e5cbe9d267fe36af717f571"),
-      new ObjectId("5e5cbe73267fe36af717eee9"),
-      new ObjectId("5e5cce02267fe36af71adeec"),
-      new ObjectId("5e5ccece267fe36af71c7a38"),
-      new ObjectId("5e5ccfb8267fe36af71e4d6f"),
-      new ObjectId("5e5cbf5b267fe36af71812f1"),
-      new ObjectId("5e5cbf8a267fe36af71819ed"),
-      new ObjectId("5e5ccfb8267fe36af71e4de1"),
-      new ObjectId("5e5cce14267fe36af71b03ce"),
-      new ObjectId("5e5ccfcf267fe36af71e7d0c"),
-      new ObjectId("5e5ccdb0267fe36af71a37bd"),
-      new ObjectId("5e5ccf2c267fe36af71d31b2"),
-      new ObjectId("5e5cce71267fe36af71bc215"),
-      new ObjectId("5e5ccfb8267fe36af71e4d44"),
-      new ObjectId("5e5cbe7c267fe36af717f051"),
-      new ObjectId("5e5ccfe4267fe36af71ea6da"),
-      new ObjectId("5e5cc746267fe36af7192dc6"),
-      new ObjectId("5e5ccfb7267fe36af71e4d19"),
-      new ObjectId("5e5ccf55267fe36af71d846f"),
-      new ObjectId("5e5ccdf7267fe36af71ac897"),
-      new ObjectId("5e5cceec267fe36af71cb683"),
-      new ObjectId("5e5cc297267fe36af718881d"),
-      new ObjectId("5e5cce05267fe36af71ae43a"),
-      new ObjectId("5e5ccf09267fe36af71ced77"),
-      new ObjectId("5e5cce9a267fe36af71c14b5"),
-      new ObjectId("5e5cc1ca267fe36af7186ac2"),
-      new ObjectId("5e5cbef1267fe36af7180293"),
-      new ObjectId("5e5ccfb7267fe36af71e4cf3"),
-      new ObjectId("5e5cce36267fe36af71b48fc"),
-      new ObjectId("5e5cbe90267fe36af717f36d"),
-      new ObjectId("5e5cc09d267fe36af7184109"),
-      new ObjectId("5e5cbe7b267fe36af717f021"),
-      new ObjectId("5e5cce06267fe36af71ae7a1"),
-      new ObjectId("5e5cce9a267fe36af71c159d"),
-      new ObjectId("5e5cbe6d267fe36af717ede8"),
-      new ObjectId("5e5ccf09267fe36af71ced4f"),
-      new ObjectId("5e5cced0267fe36af71c7d94"),
-      new ObjectId("5e5cce48267fe36af71b6d52"),
-      new ObjectId("5e5cd05b267fe36af71f9965"),
-      new ObjectId("5e5cce01267fe36af71adc71"),
-      new ObjectId("5e5cce01267fe36af71adc9a"),
-      new ObjectId("5e5cc853267fe36af7194f11"),
-      new ObjectId("5e5cd01f267fe36af71f1fc0"),
-      new ObjectId("5e5cc299267fe36af7188849"),
-      new ObjectId("5e5cca5b267fe36af7199218"),
-      new ObjectId("5e5cd027267fe36af71f2f37"),
-      new ObjectId("5e5cc35a267fe36af718a423"),
-      new ObjectId("5e5cce51267fe36af71b80be"),
-      new ObjectId("5e5cbe8b267fe36af717f296"),
-      new ObjectId("5e5cbe9e267fe36af717f5a6"),
-      new ObjectId("5e5ccfb7267fe36af71e4ca4"),
-      new ObjectId("5e5cca48267fe36af7198fb0"),
-      new ObjectId("5e5cceeb267fe36af71cb43c"),
-      new ObjectId("5e5cca4b267fe36af7199013"),
-      new ObjectId("5e5ccfb8267fe36af71e4e0a"),
-      new ObjectId("5e5cc410267fe36af718bdfe"),
-      new ObjectId("5e5ccde6267fe36af71aa5d6"),
-      new ObjectId("5e5ccf2b267fe36af71d300a"),
-      new ObjectId("5e5cc978267fe36af71975f8"),
-      new ObjectId("5e5ccf2b267fe36af71d2fdd"),
-      new ObjectId("5e5cce06267fe36af71ae7c8"),
-      new ObjectId("5e5cbe8a267fe36af717f266"),
-      new ObjectId("5e5cd04c267fe36af71f7b08"),
-      new ObjectId("5e5ccfb7267fe36af71e4cd0"),
-      new ObjectId("5e5ccfb7267fe36af71e4c7e"),
-      new ObjectId("5e5ccfe4267fe36af71ea6b4"),
-      new ObjectId("5e5cca49267fe36af7198fe0"),
-      new ObjectId("5e5ccf2b267fe36af71d302f"),
-      new ObjectId("5e5cd07f267fe36af71fdfa4"),
-      new ObjectId("5e5cbea0267fe36af717f5d8"),
-      new ObjectId("5e5cd04c267fe36af71f7ae1"),
-      new ObjectId("5e5cd04a267fe36af71f764b"),
-      new ObjectId("5e5ccda5267fe36af71a2104"),
-      new ObjectId("5e5ccf2b267fe36af71d3054"),
-      new ObjectId("5e5cd04c267fe36af71f7b30"),
-      new ObjectId("5e5cd068267fe36af71fb3a5"),
-      new ObjectId("5e5ccf2b267fe36af71d307e"),
-      new ObjectId("5e5cc857267fe36af7194fa8"),
-      new ObjectId("5e5cc1dc267fe36af7186d56"),
-      new ObjectId("5e5cd04c267fe36af71f7abf"),
-      new ObjectId("5e5ccf2c267fe36af71d30a6"),
-      new ObjectId("5e5cce1a267fe36af71b0fba"),
-      new ObjectId("5e5cd067267fe36af71fb12a"),
-      new ObjectId("5e5ccf7b267fe36af71dd1fb"),
-      new ObjectId("5e5cd04c267fe36af71f7b56"),
-      new ObjectId("5e5cbe7a267fe36af717eff1"),
-      new ObjectId("5e5cced0267fe36af71c7d6a"),
-      new ObjectId("5e5cc1dd267fe36af7186d83"),
-      new ObjectId("5e5cc57f267fe36af718f121"),
-      new ObjectId("5e5ccfda267fe36af71e931d"),
-      new ObjectId("5e5ccf4d267fe36af71d72ec"),
-      new ObjectId("5e5ccdc8267fe36af71a6824"),
-      new ObjectId("5e5ccee6267fe36af71caa40"),
-      new ObjectId("5e5ccf2c267fe36af71d30cc"),
-      new ObjectId("5e5cce6f267fe36af71bbe75"),
-      new ObjectId("5e5ccfda267fe36af71e92f5"),
-      new ObjectId("5e5ccecd267fe36af71c7832"),
-      new ObjectId("5e5ccf2c267fe36af71d3161"),
-      new ObjectId("5e5cbe5f267fe36af717ebcb"),
-      new ObjectId("5e5ccfda267fe36af71e92cf"),
-      new ObjectId("5e5ccf2c267fe36af71d313d"),
-      new ObjectId("5e5cd04c267fe36af71f7b7f"),
-      new ObjectId("5e5cd05f267fe36af71fa14d"),
-      new ObjectId("5e5ccf2c267fe36af71d3114"),
-      new ObjectId("5e5cd04c267fe36af71f7bab"),
-      new ObjectId("5e5cd017267fe36af71f0fc2"),
-      new ObjectId("5e5cc1df267fe36af7186daa"),
-      new ObjectId("5e5cd04c267fe36af71f7bd4"),
-      new ObjectId("5e5ccf2c267fe36af71d30f5"),
-      new ObjectId("5e5cbe6a267fe36af717ed89"),
-      new ObjectId("5e5cd002267fe36af71ee4ca"),
-      new ObjectId("5e5ccfda267fe36af71e92a7"),
-      new ObjectId("5e5cc074267fe36af7183b2c"),
-      new ObjectId("5e5cc64e267fe36af7190c9b"),
-      new ObjectId("5e5cc526267fe36af718e4c3"),
-      new ObjectId("5e5ccfda267fe36af71e9283"),
-      new ObjectId("5e5cd04c267fe36af71f7bfd"),
-      new ObjectId("5e5cc952267fe36af71970d0"),
-      new ObjectId("5e5cce1a267fe36af71b109e"),
-      new ObjectId("5e5cbe89267fe36af717f23e"),
-      new ObjectId("5e5cbe61267fe36af717ec2a"),
-      new ObjectId("5e5cd04d267fe36af71f7c26"),
-      new ObjectId("5e5cc1c0267fe36af7186951"),
-      new ObjectId("5e5cd04d267fe36af71f7c5c"),
-      new ObjectId("5e5cce1a267fe36af71b10f1"),
-      new ObjectId("5e5cc3dc267fe36af718b6c8"),
-      new ObjectId("5e5ccfd9267fe36af71e925a"),
-      new ObjectId("5e5ccf4d267fe36af71d72c7"),
-      new ObjectId("5e5cd017267fe36af71f0fe9"),
-      new ObjectId("5e5cc1e0267fe36af7186dd8"),
-      new ObjectId("5e5ccfd9267fe36af71e9231"),
-      new ObjectId("5e5cc539267fe36af718e78a"),
-      new ObjectId("5e5cc580267fe36af718f155"),
-      new ObjectId("5e5ccfd9267fe36af71e9209"),
-      new ObjectId("5e5cc052267fe36af7183645"),
-      new ObjectId("5e5cbe79267fe36af717efca"),
-      new ObjectId("5e5cce1a267fe36af71b107b"),
-      new ObjectId("5e5ccdf6267fe36af71ac70c"),
-      new ObjectId("5e5cc527267fe36af718e4ee"),
-      new ObjectId("5e5cc538267fe36af718e762"),
-      new ObjectId("5e5cc53b267fe36af718e7bd"),
-      new ObjectId("5e5cc53c267fe36af718e7e8"),
-      new ObjectId("5e5cc062267fe36af718389e"),
-      new ObjectId("5e5cc859267fe36af7194ffd"),
-      new ObjectId("5e5cbed6267fe36af717fe51"),
-      new ObjectId("5e5ccc7c267fe36af719d5e5"),
-      new ObjectId("5e5ccc7d267fe36af719d60c"),
-      new ObjectId("5e5cc1e0267fe36af7186de6"),
-      new ObjectId("5e5cd05b267fe36af71f99e1"),
-      new ObjectId("5e5ccfd9267fe36af71e91e1"),
-      new ObjectId("5e5cce04267fe36af71ae3ea"),
-      new ObjectId("5e5cd05b267fe36af71f99b9"),
-      new ObjectId("5e5ccebe267fe36af71c5965"),
-      new ObjectId("5e5cbe5d267fe36af717eb98"),
-      new ObjectId("5e5cceea267fe36af71cb34d"),
-      new ObjectId("5e5cc53d267fe36af718e814"),
-      new ObjectId("5e5ccdc3267fe36af71a5ea2"),
-      new ObjectId("5e5cbf59267fe36af71812bd"),
-      new ObjectId("5e5ccfcb267fe36af71e75af"),
-      new ObjectId("5e5ccfd9267fe36af71e91b9"),
-      new ObjectId("5e5cceb5267fe36af71c4b6e"),
-      new ObjectId("5e5cc584267fe36af718f1e3"),
-      new ObjectId("5e5cc537267fe36af718e733"),
-      new ObjectId("5e5ccf26267fe36af71d2516"),
-      new ObjectId("5e5cc163267fe36af7185c5f"),
-      new ObjectId("5e5cd05b267fe36af71f998f"),
-      new ObjectId("5e5cc1c2267fe36af71869ac"),
-      new ObjectId("5e5cce18267fe36af71b0c8e"),
-      new ObjectId("5e5cc581267fe36af718f17e"),
-      new ObjectId("5e5ccee7267fe36af71cac2a"),
-      new ObjectId("5e5ccfd9267fe36af71e916a"),
-      new ObjectId("5e5ccfd9267fe36af71e9191"),
-      new ObjectId("5e5cc40d267fe36af718bd96"),
-      new ObjectId("5e5ccee7267fe36af71cad94"),
-      new ObjectId("5e5cceec267fe36af71cb721"),
-      new ObjectId("5e5cd020267fe36af71f21c0"),
-      new ObjectId("5e5cced0267fe36af71c7db8")
-  };
+  /** Hardcoded for use case 4, tester. */ // UPDATE THESE TO YOUR DELETED OBJECTS AFTER RUNNING UC 4 ONCE
+  // private ObjectId[] toDelete = {
+  //     new ObjectId("5e71d429a4031107d8740151"),
+  //     new ObjectId("5e71d429a4031107d8740202"),
+  //     new ObjectId("5e71d429a4031107d8740164"),
+  //     new ObjectId("5e71d429a4031107d8740125"),
+  //     new ObjectId("5e71d429a4031107d8740186"),
+  //     new ObjectId("5e71d429a4031107d87401ad"),
+  //     new ObjectId("5e71d393a4031107d871d90d"),
+  //     new ObjectId("5e71d393a4031107d871d8ea"),
+  //     new ObjectId("5e71d428a4031107d8740019"),
+  //     new ObjectId("5e71d429a4031107d87401dd"),
+  //     new ObjectId("5e71d393a4031107d871d935"),
+  //     new ObjectId("5e71d393a4031107d871db13"),
+  //     new ObjectId("5e71d49ea4031107d875c08c"),
+  //     new ObjectId("5e71d487a4031107d87565fe"),
+  //     new ObjectId("5e71d3d4a4031107d872caf2"),
+  //     new ObjectId("5e71d40da4031107d873990e"),
+  //     new ObjectId("5e71d3f8a4031107d8734915"),
+  //     new ObjectId("5e71d3b6a4031107d8725e82"),
+  //     new ObjectId("5e71d3baa4031107d8726d11"),
+  //     new ObjectId("5e71d429a4031107d874022e"),
+  //     new ObjectId("5e71d3baa4031107d8726d2f"),
+  //     new ObjectId("5e71d3baa4031107d8726d5e"),
+  //     new ObjectId("5e71d393a4031107d871db5e"),
+  //     new ObjectId("5e71d3e1a4031107d872f864"),
+  //     new ObjectId("5e71d434a4031107d8742b4f"),
+  //     new ObjectId("5e71d4e1a4031107d876bf1b"),
+  //     new ObjectId("5e71d503a4031107d8773ebe"),
+  //     new ObjectId("5e71d4e0a4031107d876bc53"),
+  //     new ObjectId("5e71d3d3a4031107d872c82d"),
+  //     new ObjectId("5e71d4f7a4031107d87713e2"),
+  //     new ObjectId("5e71d3d3a4031107d872c804"),
+  //     new ObjectId("5e71d55fa4031107d878a205"),
+  //     new ObjectId("5e71d4e0a4031107d876bc78"),
+  //     new ObjectId("5e71d56ba4031107d878cd7d"),
+  //     new ObjectId("5e71d393a4031107d871db35"),
+  //     new ObjectId("5e71d56ba4031107d878cd99"),
+  //     new ObjectId("5e71d3d0a4031107d872bd67"),
+  //     new ObjectId("5e71d3d4a4031107d872ca00"),
+  //     new ObjectId("5e71d3d3a4031107d872c9d9"),
+  //     new ObjectId("5e71d428a4031107d87400b2"),
+  //     new ObjectId("5e71d429a4031107d8740472"),
+  //     new ObjectId("5e71d428a4031107d8740081"),
+  //     new ObjectId("5e71d393a4031107d871d95c"),
+  //     new ObjectId("5e71d348a4031107d870bb32"),
+  //     new ObjectId("5e71d428a4031107d874003d"),
+  //     new ObjectId("5e71d401a4031107d8736b4b"),
+  //     new ObjectId("5e71d468a4031107d874f13d"),
+  //     new ObjectId("5e71d4dea4031107d876b3b0"),
+  //     new ObjectId("5e71d47ba4031107d87537d2"),
+  //     new ObjectId("5e71d434a4031107d8742c86"),
+  //     new ObjectId("5e71d363a4031107d87123f4"),
+  //     new ObjectId("5e71d4dea4031107d876b392"),
+  //     new ObjectId("5e71d56ba4031107d878ce36"),
+  //     new ObjectId("5e71d3f8a4031107d8734942"),
+  //     new ObjectId("5e71d56ba4031107d878ce5f"),
+  //     new ObjectId("5e71d56ba4031107d878ce0d"),
+  //     new ObjectId("5e71d366a4031107d8712d09"),
+  //     new ObjectId("5e71d56ba4031107d878ceb7"),
+  //     new ObjectId("5e71d56ba4031107d878ce90"),
+  //     new ObjectId("5e71d428a4031107d8740064"),
+  //     new ObjectId("5e71d4faa4031107d8771fef"),
+  //     new ObjectId("5e71d473a4031107d8751adc"),
+  //     new ObjectId("5e71d508a4031107d8775335"),
+  //     new ObjectId("5e71d56ba4031107d878cdeb"),
+  //     new ObjectId("5e71d56ba4031107d878cdc4"),
+  //     new ObjectId("5e71d4b4a4031107d876148e"),
+  //     new ObjectId("5e71d442a4031107d87460bc"),
+  //     new ObjectId("5e71d50da4031107d877679c"),
+  //     new ObjectId("5e71d368a4031107d87135ec"),
+  //     new ObjectId("5e71d50ba4031107d8775e97"),
+  //     new ObjectId("5e71d3aba4031107d87235cd"),
+  //     new ObjectId("5e71d4b4a4031107d87614b7"),
+  //     new ObjectId("5e71d560a4031107d878a5ce"),
+  //     new ObjectId("5e71d4c3a4031107d8764b8c"),
+  //     new ObjectId("5e71d4c3a4031107d8764ae1"),
+  //     new ObjectId("5e71d50da4031107d87767d1"),
+  //     new ObjectId("5e71d3b7a4031107d8726319"),
+  //     new ObjectId("5e71d55ca4031107d878938e"),
+  //     new ObjectId("5e71d488a4031107d8756c96"),
+  //     new ObjectId("5e71d487a4031107d87565cd"),
+  //     new ObjectId("5e71d34ca4031107d870c9fb"),
+  //     new ObjectId("5e71d441a4031107d8745fb3"),
+  //     new ObjectId("5e71d4b7a4031107d8762023"),
+  //     new ObjectId("5e71d38da4031107d871c48c"),
+  //     new ObjectId("5e71d3aba4031107d87235ab"),
+  //     new ObjectId("5e71d441a4031107d8745f8f"),
+  //     new ObjectId("5e71d41ca4031107d873d339"),
+  //     new ObjectId("5e71d41ca4031107d873d312"),
+  //     new ObjectId("5e71d429a4031107d874044d"),
+  //     new ObjectId("5e71d565a4031107d878b924"),
+  //     new ObjectId("5e71d489a4031107d8756daf"),
+  //     new ObjectId("5e71d429a4031107d87403da"),
+  //     new ObjectId("5e71d510a4031107d877721c"),
+  //     new ObjectId("5e71d353a4031107d870e6ae"),
+  //     new ObjectId("5e71d38da4031107d871c1ec"),
+  //     new ObjectId("5e71d372a4031107d8715d83"),
+  //     new ObjectId("5e71d3d4a4031107d872ca7b"),
+  //     new ObjectId("5e71d510a4031107d87771f9"),
+  //     new ObjectId("5e71d386a4031107d871aa04"),
+  //     new ObjectId("5e71d410a4031107d873a216"),
+  //     new ObjectId("5e71d354a4031107d870e6d9"),
+  //     new ObjectId("5e71d36fa4031107d8715056"),
+  //     new ObjectId("5e71d41ca4031107d873d0e3"),
+  //     new ObjectId("5e71d41ca4031107d873d0b0"),
+  //     new ObjectId("5e71d353a4031107d870e4b5"),
+  //     new ObjectId("5e71d442a4031107d8746111"),
+  //     new ObjectId("5e71d488a4031107d8756c6c"),
+  //     new ObjectId("5e71d3d4a4031107d872ca50"),
+  //     new ObjectId("5e71d3faa4031107d873515a"),
+  //     new ObjectId("5e71d354a4031107d870e704"),
+  //     new ObjectId("5e71d353a4031107d870e48b"),
+  //     new ObjectId("5e71d554a4031107d87877d9"),
+  //     new ObjectId("5e71d510a4031107d8777242"),
+  //     new ObjectId("5e71d353a4031107d870e46b"),
+  //     new ObjectId("5e71d3c0a4031107d8728329"),
+  //     new ObjectId("5e71d354a4031107d870e8f4"),
+  //     new ObjectId("5e71d353a4031107d870e445"),
+  //     new ObjectId("5e71d488a4031107d8756b03"),
+  //     new ObjectId("5e71d3c0a4031107d872834d"),
+  //     new ObjectId("5e71d56ba4031107d878cede"),
+  //     new ObjectId("5e71d354a4031107d870e8c5"),
+  //     new ObjectId("5e71d4cea4031107d87677fe"),
+  //     new ObjectId("5e71d4b9a4031107d87624a9"),
+  //     new ObjectId("5e71d36fa4031107d871523d"),
+  //     new ObjectId("5e71d441a4031107d8745fd4"),
+  //     new ObjectId("5e71d366a4031107d8712ec4"),
+  //     new ObjectId("5e71d381a4031107d8719549"),
+  //     new ObjectId("5e71d354a4031107d870e8a8"),
+  //     new ObjectId("5e71d356a4031107d870f1aa"),
+  //     new ObjectId("5e71d3a6a4031107d8722196"),
+  //     new ObjectId("5e71d36fa4031107d871520a"),
+  //     new ObjectId("5e71d569a4031107d878c88c"),
+  //     new ObjectId("5e71d3aca4031107d8723ab1"),
+  //     new ObjectId("5e71d510a4031107d87771c6"),
+  //     new ObjectId("5e71d56aa4031107d878c953"),
+  //     new ObjectId("5e71d36fa4031107d87151e0"),
+  //     new ObjectId("5e71d488a4031107d8756a0e"),
+  //     new ObjectId("5e71d36fa4031107d871502a"),
+  //     new ObjectId("5e71d414a4031107d873b3d4"),
+  //     new ObjectId("5e71d3c8a4031107d8729f03"),
+  //     new ObjectId("5e71d513a4031107d8777daa"),
+  //     new ObjectId("5e71d560a4031107d878a577"),
+  //     new ObjectId("5e71d503a4031107d8774022"),
+  //     new ObjectId("5e71d353a4031107d870e683"),
+  //     new ObjectId("5e71d521a4031107d877b2e4"),
+  //     new ObjectId("5e71d352a4031107d870e1ca"),
+  //     new ObjectId("5e71d3e7a4031107d8730f14"),
+  //     new ObjectId("5e71d354a4031107d870e919"),
+  //     new ObjectId("5e71d560a4031107d878a5a6"),
+  //     new ObjectId("5e71d489a4031107d8756eeb"),
+  //     new ObjectId("5e71d429a4031107d8740419"),
+  //     new ObjectId("5e71d3f3a4031107d873375f"),
+  //     new ObjectId("5e71d4b4a4031107d87614d1"),
+  //     new ObjectId("5e71d3d4a4031107d872ca28"),
+  //     new ObjectId("5e71d4cea4031107d87677d1"),
+  //     new ObjectId("5e71d3aca4031107d8723a82"),
+  //     new ObjectId("5e71d3e7a4031107d8730f39"),
+  //     new ObjectId("5e71d352a4031107d870e198"),
+  //     new ObjectId("5e71d3d4a4031107d872caa2"),
+  //     new ObjectId("5e71d50da4031107d8776775"),
+  //     new ObjectId("5e71d353a4031107d870e65e"),
+  //     new ObjectId("5e71d552a4031107d8786ebf"),
+  //     new ObjectId("5e71d362a4031107d8712023"),
+  //     new ObjectId("5e71d368a4031107d87135d2"),
+  //     new ObjectId("5e71d50da4031107d8776740"),
+  //     new ObjectId("5e71d488a4031107d8756b51"),
+  //     new ObjectId("5e71d552a4031107d8786e98"),
+  //     new ObjectId("5e71d350a4031107d870d74b"),
+  //     new ObjectId("5e71d536a4031107d878021d"),
+  //     new ObjectId("5e71d368a4031107d87135ae"),
+  //     new ObjectId("5e71d4b7a4031107d8761fff"),
+  //     new ObjectId("5e71d399a4031107d871f078"),
+  //     new ObjectId("5e71d42aa4031107d874050b"),
+  //     new ObjectId("5e71d53aa4031107d87811fc"),
+  //     new ObjectId("5e71d503a4031107d8774049"),
+  //     new ObjectId("5e71d459a4031107d874b6b2"),
+  //     new ObjectId("5e71d508a4031107d877535e"),
+  //     new ObjectId("5e71d56ba4031107d878cfc4"),
+  //     new ObjectId("5e71d4e1a4031107d876bf40"),
+  //     new ObjectId("5e71d56ba4031107d878cf02"),
+  //     new ObjectId("5e71d458a4031107d874b3dc"),
+  //     new ObjectId("5e71d3d4a4031107d872cacc"),
+  //     new ObjectId("5e71d4e3a4031107d876c750"),
+  //     new ObjectId("5e71d51ca4031107d8779ecb"),
+  //     new ObjectId("5e71d352a4031107d870e2ae"),
+  //     new ObjectId("5e71d353a4031107d870e41d"),
+  //     new ObjectId("5e71d41ca4031107d873d2c0"),
+  //     new ObjectId("5e71d354a4031107d870e941"),
+  //     new ObjectId("5e71d352a4031107d870e28c"),
+  //     new ObjectId("5e71d41ca4031107d873d2ec"),
+  //     new ObjectId("5e71d489a4031107d8756d8f"),
+  //     new ObjectId("5e71d503a4031107d8774004"),
+  //     new ObjectId("5e71d35ca4031107d8710677"),
+  //     new ObjectId("5e71d35da4031107d8710d12"),
+  //     new ObjectId("5e71d503a4031107d8774070"),
+  //     new ObjectId("5e71d426a4031107d873f7b5"),
+  //     new ObjectId("5e71d50fa4031107d8776f93"),
+  //     new ObjectId("5e71d3efa4031107d8732aaf"),
+  //     new ObjectId("5e71d4b9a4031107d87624d1"),
+  //     new ObjectId("5e71d459a4031107d874b560"),
+  //     new ObjectId("5e71d503a4031107d8773fdc"),
+  //     new ObjectId("5e71d353a4031107d870e3f1"),
+  //     new ObjectId("5e71d51aa4031107d877994a"),
+  //     new ObjectId("5e71d3a6a4031107d87221ea"),
+  //     new ObjectId("5e71d503a4031107d8773faf"),
+  //     new ObjectId("5e71d4cea4031107d8767765"),
+  //     new ObjectId("5e71d416a4031107d873bc39"),
+  //     new ObjectId("5e71d498a4031107d875a99e"),
+  //     new ObjectId("5e71d37aa4031107d8717c28"),
+  //     new ObjectId("5e71d41ea4031107d873d85d"),
+  //     new ObjectId("5e71d4a7a4031107d875e0a1"),
+  //     new ObjectId("5e71d46ea4031107d8750827"),
+  //     new ObjectId("5e71d373a4031107d8715ed4"),
+  //     new ObjectId("5e71d357a4031107d870f602"),
+  //     new ObjectId("5e71d503a4031107d8773f84"),
+  //     new ObjectId("5e71d438a4031107d8743cef"),
+  //     new ObjectId("5e71d354a4031107d870e72d"),
+  //     new ObjectId("5e71d368a4031107d8713500"),
+  //     new ObjectId("5e71d353a4031107d870e3ca"),
+  //     new ObjectId("5e71d41fa4031107d873dbd2"),
+  //     new ObjectId("5e71d46fa4031107d8750910"),
+  //     new ObjectId("5e71d352a4031107d870e178"),
+  //     new ObjectId("5e71d4a7a4031107d875e07c"),
+  //     new ObjectId("5e71d48aa4031107d87570e6"),
+  //     new ObjectId("5e71d442a4031107d87460e4"),
+  //     new ObjectId("5e71d55aa4031107d8788bd7"),
+  //     new ObjectId("5e71d41ca4031107d873d089"),
+  //     new ObjectId("5e71d41ca4031107d873d064"),
+  //     new ObjectId("5e71d3afa4031107d87242df"),
+  //     new ObjectId("5e71d53aa4031107d8781122"),
+  //     new ObjectId("5e71d37aa4031107d8717c54"),
+  //     new ObjectId("5e71d3c1a4031107d87285ea"),
+  //     new ObjectId("5e71d53ea4031107d87820e1"),
+  //     new ObjectId("5e71d382a4031107d8719809"),
+  //     new ObjectId("5e71d447a4031107d8747433"),
+  //     new ObjectId("5e71d353a4031107d870e635"),
+  //     new ObjectId("5e71d354a4031107d870e969"),
+  //     new ObjectId("5e71d503a4031107d8773f3a"),
+  //     new ObjectId("5e71d3c0a4031107d8728369"),
+  //     new ObjectId("5e71d498a4031107d875a74b"),
+  //     new ObjectId("5e71d3c0a4031107d87283b6"),
+  //     new ObjectId("5e71d503a4031107d8774099"),
+  //     new ObjectId("5e71d388a4031107d871b192"),
+  //     new ObjectId("5e71d40da4031107d8739934"),
+  //     new ObjectId("5e71d4b8a4031107d8762325"),
+  //     new ObjectId("5e71d3b9a4031107d87269e8"),
+  //     new ObjectId("5e71d4b8a4031107d8762303"),
+  //     new ObjectId("5e71d41fa4031107d873dbf9"),
+  //     new ObjectId("5e71d353a4031107d870e605"),
+  //     new ObjectId("5e71d552a4031107d8786d2f"),
+  //     new ObjectId("5e71d503a4031107d8773f63"),
+  //     new ObjectId("5e71d503a4031107d8773f10"),
+  //     new ObjectId("5e71d51aa4031107d8779921"),
+  //     new ObjectId("5e71d3c0a4031107d8728394"),
+  //     new ObjectId("5e71d4b8a4031107d8762354"),
+  //     new ObjectId("5e71d56da4031107d878d541"),
+  //     new ObjectId("5e71d354a4031107d870e997"),
+  //     new ObjectId("5e71d551a4031107d8786cff"),
+  //     new ObjectId("5e71d550a4031107d8786848"),
+  //     new ObjectId("5e71d3e9a4031107d8731451"),
+  //     new ObjectId("5e71d4b8a4031107d876237b"),
+  //     new ObjectId("5e71d552a4031107d8786d56"),
+  //     new ObjectId("5e71d560a4031107d878a5f9"),
+  //     new ObjectId("5e71d4b8a4031107d8762397"),
+  //     new ObjectId("5e71d3afa4031107d8724395"),
+  //     new ObjectId("5e71d373a4031107d871612c"),
+  //     new ObjectId("5e71d551a4031107d8786cd3"),
+  //     new ObjectId("5e71d4b8a4031107d87623bf"),
+  //     new ObjectId("5e71d429a4031107d87403f6"),
+  //     new ObjectId("5e71d560a4031107d878a390"),
+  //     new ObjectId("5e71d4e2a4031107d876c47c"),
+  //     new ObjectId("5e71d552a4031107d8786d80"),
+  //     new ObjectId("5e71d353a4031107d870e3ae"),
+  //     new ObjectId("5e71d48aa4031107d87570c4"),
+  //     new ObjectId("5e71d373a4031107d8716156"),
+  //     new ObjectId("5e71d395a4031107d871e445"),
+  //     new ObjectId("5e71d515a4031107d87785c5"),
+  //     new ObjectId("5e71d4caa4031107d87665c8"),
+  //     new ObjectId("5e71d3fda4031107d8735b2a"),
+  //     new ObjectId("5e71d495a4031107d8759d6c"),
+  //     new ObjectId("5e71d4b8a4031107d87623e2"),
+  //     new ObjectId("5e71d458a4031107d874b1cb"),
+  //     new ObjectId("5e71d515a4031107d8778592"),
+  //     new ObjectId("5e71d488a4031107d8756b76"),
+  //     new ObjectId("5e71d4b9a4031107d8762480"),
+  //     new ObjectId("5e71d352a4031107d870df55"),
+  //     new ObjectId("5e71d515a4031107d877856f"),
+  //     new ObjectId("5e71d4b8a4031107d8762458"),
+  //     new ObjectId("5e71d552a4031107d8786da6"),
+  //     new ObjectId("5e71d55ca4031107d87893b8"),
+  //     new ObjectId("5e71d4b8a4031107d8762431"),
+  //     new ObjectId("5e71d552a4031107d8786dcf"),
+  //     new ObjectId("5e71d536a4031107d87801aa"),
+  //     new ObjectId("5e71d373a4031107d8716170"),
+  //     new ObjectId("5e71d552a4031107d8786df8"),
+  //     new ObjectId("5e71d4b8a4031107d8762408"),
+  //     new ObjectId("5e71d352a4031107d870e12f"),
+  //     new ObjectId("5e71d52ba4031107d877d766"),
+  //     new ObjectId("5e71d515a4031107d8778542"),
+  //     new ObjectId("5e71d366a4031107d8712e97"),
+  //     new ObjectId("5e71d39da4031107d8720027"),
+  //     new ObjectId("5e71d392a4031107d871d7d2"),
+  //     new ObjectId("5e71d515a4031107d877851b"),
+  //     new ObjectId("5e71d552a4031107d8786e1f"),
+  //     new ObjectId("5e71d3b8a4031107d872646e"),
+  //     new ObjectId("5e71d42aa4031107d87404e5"),
+  //     new ObjectId("5e71d353a4031107d870e5dc"),
+  //     new ObjectId("5e71d352a4031107d870dfa3"),
+  //     new ObjectId("5e71d552a4031107d8786e47"),
+  //     new ObjectId("5e71d372a4031107d8715d5c"),
+  //     new ObjectId("5e71d552a4031107d8786e6d"),
+  //     new ObjectId("5e71d42aa4031107d8740530"),
+  //     new ObjectId("5e71d386a4031107d871aa7d"),
+  //     new ObjectId("5e71d515a4031107d87784ef"),
+  //     new ObjectId("5e71d4caa4031107d87665a5"),
+  //     new ObjectId("5e71d536a4031107d87801d2"),
+  //     new ObjectId("5e71d373a4031107d8716199"),
+  //     new ObjectId("5e71d515a4031107d87784c4"),
+  //     new ObjectId("5e71d393a4031107d871da74"),
+  //     new ObjectId("5e71d396a4031107d871e46a"),
+  //     new ObjectId("5e71d515a4031107d87784a4"),
+  //     new ObjectId("5e71d365a4031107d87129be"),
+  //     new ObjectId("5e71d353a4031107d870e380"),
+  //     new ObjectId("5e71d42aa4031107d87404cb"),
+  //     new ObjectId("5e71d416a4031107d873baa8"),
+  //     new ObjectId("5e71d392a4031107d871d7f8"),
+  //     new ObjectId("5e71d393a4031107d871da4c"),
+  //     new ObjectId("5e71d393a4031107d871da96"),
+  //     new ObjectId("5e71d393a4031107d871dac7"),
+  //     new ObjectId("5e71d366a4031107d8712bed"),
+  //     new ObjectId("5e71d3afa4031107d87243eb"),
+  //     new ObjectId("5e71d356a4031107d870f186"),
+  //     new ObjectId("5e71d3d3a4031107d872c982"),
+  //     new ObjectId("5e71d3d3a4031107d872c9ae"),
+  //     new ObjectId("5e71d374a4031107d87161bf"),
+  //     new ObjectId("5e71d55aa4031107d8788c3f"),
+  //     new ObjectId("5e71d515a4031107d8778479"),
+  //     new ObjectId("5e71d41ea4031107d873d809"),
+  //     new ObjectId("5e71d55aa4031107d8788c1b"),
+  //     new ObjectId("5e71d480a4031107d8754c92"),
+  //     new ObjectId("5e71d352a4031107d870df2d"),
+  //     new ObjectId("5e71d498a4031107d875a66d"),
+  //     new ObjectId("5e71d393a4031107d871daed"),
+  //     new ObjectId("5e71d3faa4031107d8735181"),
+  //     new ObjectId("5e71d35ca4031107d8710647"),
+  //     new ObjectId("5e71d50da4031107d8776837"),
+  //     new ObjectId("5e71d515a4031107d8778451"),
+  //     new ObjectId("5e71d47da4031107d8753e8c"),
+  //     new ObjectId("5e71d396a4031107d871e514"),
+  //     new ObjectId("5e71d393a4031107d871da24"),
+  //     new ObjectId("5e71d4b5a4031107d8761865"),
+  //     new ObjectId("5e71d36fa4031107d871507f"),
+  //     new ObjectId("5e71d55aa4031107d8788bef"),
+  //     new ObjectId("5e71d372a4031107d8715dab"),
+  //     new ObjectId("5e71d428a4031107d87400d6"),
+  //     new ObjectId("5e71d396a4031107d871e493"),
+  //     new ObjectId("5e71d496a4031107d8759f3a"),
+  //     new ObjectId("5e71d515a4031107d87783ff"),
+  //     new ObjectId("5e71d515a4031107d8778423"),
+  //     new ObjectId("5e71d388a4031107d871b113"),
+  //     new ObjectId("5e71d496a4031107d875a090"),
+  //     new ObjectId("5e71d499a4031107d875aa33"),
+  //     new ObjectId("5e71d53aa4031107d878133e"),
+  //     new ObjectId("5e71d48aa4031107d8757109") 
+  // };
 
   /**
    * Cleanup any state for this DB. Called once per DB instance; there is one DB
@@ -555,12 +554,12 @@ public class MongoDbClient extends GeoDB {
       if(geoLoad(table1, generator) == Status.ERROR) {
         return Status.ERROR;
       }
-//      if(geoLoad(table2, generator) == Status.ERROR) {
-//        return Status.ERROR;
-//      }
-//      if(geoLoad(table3, generator) == Status.ERROR) {
-//        return Status.ERROR;
-//      }
+      if(geoLoad(table2, generator) == Status.ERROR) {
+        return Status.ERROR;
+      }
+     if(geoLoad(table3, generator) == Status.ERROR) {
+       return Status.ERROR;
+     }
       generator.incrementSynthesisOffset();
       
       return Status.OK;
@@ -884,14 +883,85 @@ public class MongoDbClient extends GeoDB {
       final HashMap<String, Vector<HashMap<String, ByteIterator>>> result, ParameterGenerator gen) {
     try {
       MongoCollection<Document> collection = database.getCollection(table);
-      MongoCursor<Document> cursor = null;
+//      MongoCursor<Document> cursor = null;
+
+      /* ARTIFICIAL USE CASE */
+//      Random random = new Random();
+//      ArrayList<DataFilter> predicates = gen.getGeometryPredicatesList();
+//      DataFilter school = predicates.get(random.nextInt(2754) + 1);
+//      
+//      System.out.println(school.getDocid());
+//      
+//      String nearFieldName = school.getNestedPredicateA().getName();
+//
+//      HashMap<String, Object> nearFields = new ObjectMapper().readValue(
+//          school.getNestedPredicateA().getValueA().toString(), HashMap.class);
+//      Document refPoint = new Document(nearFields);
+//      
+//      Random rand = new Random();
+//      double longmax = GeoWorkload.LONG_MAX * -1;
+//      double longmin = GeoWorkload.LONG_MIN * -1;
+//      double latmax = GeoWorkload.LAT_MAX;
+//      double latmin = GeoWorkload.LAT_MIN;
+//      
+//      double[] coords = {(longmin + (longmax - longmin) * rand.nextDouble()) * -1,
+//          latmin + (latmax - latmin) * rand.nextDouble()};
+//      JSONObject jobj = new JSONObject().put("coordinates", new JSONArray(coords));
+//      jobj.put("type", "Point");
+//      HashMap<String, Object> nearFields = new ObjectMapper().readValue(
+//          jobj.toString(), HashMap.class);
+//      Document refPoint = new Document(nearFields);
+//
+//      System.out.println(refPoint);
+//      
+////       Query
+//      FindIterable<Document> findIterable = collection.find(Filters.near(
+//          "geometry", refPoint, 500.0, 0.0)).batchSize(3000);
+//
+//       Get all query result's document fields
+//      Document projection = new Document();
+//      for (String field : gen.getAllGeoFields().get(table)) {
+//        projection.put(field, INCLUDE);
+//      }
+//      findIterable.projection(projection);
+
+      // Add to result
+//      Document queryResult = findIterable.first();
+//
+//      Vector<HashMap<String, ByteIterator>> graffitiResults = new Vector<>();
+//      if (queryResult != null) {
+//        HashMap<String, ByteIterator> resultMap = new HashMap<String, ByteIterator>();
+//        geoFillMap(resultMap, queryResult);
+//        graffitiResults.add(resultMap);
+//      }
+//      result.put(school.getName() + refPoint.toString(), graffitiResults);
+//      cursor = findIterable.iterator();
+//      
+//      Vector<HashMap<String, ByteIterator>> graffitiResults = new Vector<>();
+//      while (cursor.hasNext()) {
+//        HashMap<String, ByteIterator> resultMap =
+//            new HashMap<String, ByteIterator>();
+//
+//        Document obj = cursor.next();
+//        geoFillMap(resultMap, obj);
+//        graffitiResults.add(resultMap);
+//      }
+//
+//      result.put(school.getNestedPredicateA().getValueA().toString(), graffitiResults);
+//      result.put(jobj.toString(), graffitiResults);
+
+      /* END ARTIFICIAL USE CASE */
       
       int maxGraffitiCount = Integer.MIN_VALUE;
       String maxGraffitiSchool = "";
-      Vector<HashMap<String, ByteIterator>> maxGraffiti = null;
-      
+      Vector<HashMap<String, ByteIterator>> maxGraffiti = new Vector<>();
+      ArrayList<DataFilter> schools = gen.getGeometryPredicatesList();
       // Perform near query on incidents for all school documents
-      for(DataFilter school : gen.getGeometryPredicatesList()) {
+      for(int i = 0; i < schools.size(); i++) {
+        DataFilter school = schools.get(i);
+        System.out.println("i = " + i + " " + school.getName() + 
+            ": " + school.getNestedPredicateA().getValueA().toString());
+
         String nearFieldName = school.getNestedPredicateA().getName();
         HashMap<String, Object> nearFields = new ObjectMapper().readValue(
             school.getNestedPredicateA().getValueA().toString(), HashMap.class);
@@ -899,7 +969,7 @@ public class MongoDbClient extends GeoDB {
         
         // Query
         FindIterable<Document> findIterable = collection.find(Filters.near(
-            nearFieldName, refPoint, 500.0, 0.0));
+            nearFieldName, refPoint, 500.0, 0.0)).batchSize(2000);
         
         // Get all query result's document fields
         Document projection = new Document();
@@ -908,39 +978,42 @@ public class MongoDbClient extends GeoDB {
         }
         findIterable.projection(projection);
         
-        // Add to result
-        cursor = findIterable.iterator();      
-        // If no graffiti was found near the school, the school gets an empty vector
-//        if(!cursor.hasNext()) {
-//          result.put(school.getName(), new Vector<HashMap<String, ByteIterator>>s());
-//          continue;
-//        }
+        // Add to results
+        Document d = findIterable.first();
+//        ArrayList<Document> graffitiList = findIterable.into(new ArrayList<Document>());
+////        cursor = findIterable.iterator();      
+  
+//        // If there is graffiti, add the results under the school's name
+        if (d != null) {
+          HashMap<String, ByteIterator> resultMap = new HashMap<String, ByteIterator>();
+          geoFillMap(resultMap, d);
+          maxGraffiti.add(resultMap);
+        }
         
-        // If there is graffiti, add the results under the school's name
-        Vector<HashMap<String, ByteIterator>> graffitiResults = new Vector<>();
-        while (cursor.hasNext()) {
-          HashMap<String, ByteIterator> resultMap =
-              new HashMap<String, ByteIterator>();
-
-          Document obj = cursor.next();
-          geoFillMap(resultMap, obj);
-          graffitiResults.add(resultMap);
-        }
-        if(graffitiResults.size() > maxGraffitiCount) {
-          maxGraffitiSchool = school.getName() + school.getNestedPredicateA().getValueA().toString();
-          maxGraffiti = graffitiResults;
-          maxGraffitiCount = maxGraffiti.size();
-
-          System.out.println(maxGraffitiSchool + " graffiti count: " + maxGraffiti.size());
-        } else {
-          System.out.println("PASS...");
-        }
-//        result.put(school.getName(), graffitiResults);
+//        Vector<HashMap<String, ByteIterator>> graffitiResults = new Vector<>();
+////        while (cursor.hasNext()) {
+//        for(Document d : graffitiList) {
+//          HashMap<String, ByteIterator> resultMap = new HashMap<String, ByteIterator>();
+//
+////          Document obj = cursor.next();
+////          geoFillMap(resultMap, obj);
+//          geoFillMap(resultMap, d);
+//          graffitiResults.add(resultMap);
+//        }
+//        if(graffitiResults.size() > maxGraffitiCount) {
+//          maxGraffitiSchool = school.getName() + school.getNestedPredicateA().getValueA().toString();
+//          maxGraffiti = graffitiResults;
+//          maxGraffitiCount = maxGraffiti.size();
+//
+//          System.out.println(maxGraffitiSchool + " graffiti count: " + maxGraffiti.size());
+//        } else {
+//          System.out.println("PASS...");
+//        }
       }
-      
-      if(maxGraffiti == null) {
-        return Status.ERROR;
-      }
+////      
+////      if(maxGraffiti == null) {
+////        return Status.ERROR;
+////      }
       result.put(maxGraffitiSchool, maxGraffiti);
       return Status.OK;
       
@@ -957,17 +1030,18 @@ public class MongoDbClient extends GeoDB {
     try {
       MongoCollection<Document> collection = database.getCollection(table);
 
+      ArrayList<DataFilter> neighborhoods = gen.getGeometryPredicatesList();
       // Loop through grid of city
-      for(DataFilter cell : gen.getGeometryPredicatesList()) {
-        String fieldName = cell.getName();
+      for(int i = 0; i < neighborhoods.size(); i++) {
+        DataFilter cell = neighborhoods.get(i);
         JSONObject intersectFieldValue = cell.getValueA();
         HashMap<String, Object> intersectFields = new ObjectMapper()
             .readValue(intersectFieldValue.toString(), HashMap.class);
         Document refPoint = new Document(intersectFields);
-
+        
         // Query
         FindIterable<Document> findIterable = collection.find(
-            Filters.geoWithin("geometry", refPoint));
+            Filters.geoWithin("geometry", refPoint)).batchSize(2000);
 
         // Get all query result's document fields
         Document projection = new Document();
@@ -977,24 +1051,22 @@ public class MongoDbClient extends GeoDB {
         findIterable.projection(projection);
 
         // Add to result
-        cursor = findIterable.iterator();
-
-        if(!cursor.hasNext()) {
-          result.put(intersectFieldValue.toString(), new Vector<HashMap<String, ByteIterator>>());
-          System.out.println("No graffiti in this cell " + intersectFieldValue.toString());
-          continue;
-        }
-
+        Document d = findIterable.first();
+//        ArrayList<Document> graffitiList = findIterable.into(new ArrayList<Document>());
+        
         // If there is graffiti, add the results under the cell's locations
         Vector<HashMap<String, ByteIterator>> graffitiResults = new Vector<>();
-        while (cursor.hasNext()) {
-          HashMap<String, ByteIterator> resultMap =
-              new HashMap<String, ByteIterator>();
-
-          Document obj = cursor.next();
-          geoFillMap(resultMap, obj);
+        if (d != null) {
+          HashMap<String, ByteIterator> resultMap = new HashMap<String, ByteIterator>();
+          geoFillMap(resultMap, d);
           graffitiResults.add(resultMap);
         }
+//        Vector<HashMap<String, ByteIterator>> graffitiResults = new Vector<>();
+//        for(Document d : graffitiList) {
+//          HashMap<String, ByteIterator> resultMap = new HashMap<String, ByteIterator>();
+//          geoFillMap(resultMap, d);
+//          graffitiResults.add(resultMap);
+//        }
         result.put(intersectFieldValue.toString(), graffitiResults);
         System.out.println(intersectFieldValue.toString() + ": COUNT = " + graffitiResults.size());
       }
@@ -1026,7 +1098,7 @@ public class MongoDbClient extends GeoDB {
         
         // Query
         FindIterable<Document> findIterable = collection.find(
-            Filters.geoIntersects(fieldName, refPoint));
+            Filters.geoIntersects(fieldName, refPoint)).batchSize(2000);
         
         // Project
         Document projection = new Document();
@@ -1035,20 +1107,19 @@ public class MongoDbClient extends GeoDB {
         }
         findIterable.projection(projection);
         
-        cursor = findIterable.iterator();
+        // Add to result
+        ArrayList<Document> buildingList = findIterable.into(new ArrayList<Document>());
         
         // Key of the grid cell = intersectFieldValue
         // If no buildings in the cell, put value to 0
-        if(!cursor.hasNext()) {
+        if(buildingList.size() == 0) {
           densities.put(intersectFieldValue, 0.0);
           continue;
         }
-        
         // If there are buildings, sum their areas
         double density = 0;
-        while (cursor.hasNext()) {
-          Document obj = cursor.next();
-          JSONObject jobj = new JSONObject(obj.toJson());
+        for(Document d : buildingList) {
+          JSONObject jobj = new JSONObject(d.toJson());
           Double area = ((JSONObject) jobj.get("properties")).getDouble(gen.getBuildingsShapeArea());
           density += area;
         }
@@ -1076,7 +1147,7 @@ public class MongoDbClient extends GeoDB {
         
         // Query
         FindIterable<Document> findIterable = collection.find(
-            Filters.geoIntersects("geometry", refPoint));
+            Filters.geoIntersects("geometry", refPoint)).batchSize(2000);
         
         // Project
         Document projection = new Document();
@@ -1085,30 +1156,34 @@ public class MongoDbClient extends GeoDB {
         }
         findIterable.projection(projection);
         
-        // Add to results
-        cursor = findIterable.iterator();
-        
-        // Key = predicate
-        if(!cursor.hasNext()) {
-          result.put(intersectFieldValue, new Vector<HashMap<String, ByteIterator>>());
-          continue;
-        }
-        
+        // Add to result
+        Document d = findIterable.first();
+//      ArrayList<Document> graffitiList = findIterable.into(new ArrayList<Document>());
+      
+        // If there is graffiti, add the result under the cell's locations
         Vector<HashMap<String, ByteIterator>> graffitiResults = new Vector<>();
-        while (cursor.hasNext()) {
-          HashMap<String, ByteIterator> resultMap =
-              new HashMap<String, ByteIterator>();
-
-          Document obj = cursor.next();
-          geoFillMap(resultMap, obj);
+        if (d != null) {
+          HashMap<String, ByteIterator> resultMap = new HashMap<String, ByteIterator>();
+          geoFillMap(resultMap, d);
           graffitiResults.add(resultMap);
         }
-        result.put(intersectFieldValue, graffitiResults);
+        //If there is no graffiti, add an empty vector
+//        if(graffitiList.size() == 0) {
+//          result.put(intersectFieldValue, new Vector<HashMap<String, ByteIterator>>());
+//          continue;
+//        }
+//        
+//        // If there is graffiti, add the results under the cell's locations
+//        Vector<HashMap<String, ByteIterator>> graffitiResults = new Vector<>();
+//        for(Document d : graffitiList) {
+//          HashMap<String, ByteIterator> resultMap = new HashMap<String, ByteIterator>();
+//          geoFillMap(resultMap, d);
+//          graffitiResults.add(resultMap);
+//        }
+        result.put(intersectFieldValue.toString(), graffitiResults);
         System.out.println("Cell: " + intersectFieldValue.toString() + " Graffiti count: " + graffitiResults.size());
       }
-
       return Status.OK;
-    
     } catch (Exception e) {
       e.printStackTrace();
       return Status.ERROR;
@@ -1132,11 +1207,11 @@ public class MongoDbClient extends GeoDB {
 //      if(queryStatus == Status.ERROR) {
 //        return Status.ERROR;
 //      }
-//      
+      
       MongoCollection<Document> collection = database.getCollection(table);
-//      
+      
       int counter = 0;
-      // delete from a query results list
+      // deletes query result
 //      for(String key : toDelete.keySet()) {
 //        System.out.println("Graffiti in " + key + ": " + toDelete.get(key).size());
 //        for(HashMap<String, ByteIterator> doc : toDelete.get(key)) {
@@ -1149,7 +1224,7 @@ public class MongoDbClient extends GeoDB {
 //      }
 //      System.out.println("\tDeleted: " + counter);
       
-      // hardcoded value deletion
+      // deletes hardcoded values
       for(ObjectId id : toDelete) { 
         BasicDBObject delete = new BasicDBObject();
         delete.put("_id", id);
