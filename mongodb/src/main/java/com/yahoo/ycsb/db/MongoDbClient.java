@@ -1192,45 +1192,45 @@ public class MongoDbClient extends GeoDB {
   
   //*********************  GEO USE CASE 4 ********************************
   public Status geoUseCase4(String table, String operation, Set<Integer> deleted, ParameterGenerator gen) {
-//    HashMap<String, Vector<HashMap<String, ByteIterator>>> toDelete = new HashMap<>();
+    HashMap<String, Vector<HashMap<String, ByteIterator>>> toDelete = new HashMap<>();
     try {
-//      Status queryStatus = null;
-//      // Based on the operation, clean all the graffiti resulting from that search
-//      switch(operation) {
-//      case "geo_case_graffiti_by_schools":
-//        queryStatus = geoUseCase1(table, toDelete, gen);
-//        break;
-//      default:
-//        return Status.ERROR;
-//      }
-//      
-//      if(queryStatus == Status.ERROR) {
-//        return Status.ERROR;
-//      }
+      Status queryStatus = null;
+      // Based on the operation, clean all the graffiti resulting from that search
+      switch(operation) {
+      case "geo_case_graffiti_by_schools":
+        queryStatus = geoUseCase1(table, toDelete, gen);
+        break;
+      default:
+        return Status.ERROR;
+      }
+      
+      if(queryStatus == Status.ERROR) {
+        return Status.ERROR;
+      }
       
       MongoCollection<Document> collection = database.getCollection(table);
       
       int counter = 0;
       // deletes query result
-//      for(String key : toDelete.keySet()) {
-//        System.out.println("Graffiti in " + key + ": " + toDelete.get(key).size());
-//        for(HashMap<String, ByteIterator> doc : toDelete.get(key)) {
-//          System.out.println(doc.get("_id").toString());
-//          //delete
-//          BasicDBObject delete = new BasicDBObject();
-//          delete.put("_id", new ObjectId(doc.get("_id").toString()));
-//          counter += collection.deleteOne(delete).getDeletedCount();
-//        }
-//      }
-//      System.out.println("\tDeleted: " + counter);
-      
-      // deletes hardcoded values
-      for(ObjectId id : toDelete) { 
-        BasicDBObject delete = new BasicDBObject();
-        delete.put("_id", id);
-        counter += collection.deleteOne(delete).getDeletedCount();
+      for(String key : toDelete.keySet()) {
+        System.out.println("Graffiti in " + key + ": " + toDelete.get(key).size());
+        for(HashMap<String, ByteIterator> doc : toDelete.get(key)) {
+          System.out.println(doc.get("_id").toString());
+          //delete
+          BasicDBObject delete = new BasicDBObject();
+          delete.put("_id", new ObjectId(doc.get("_id").toString()));
+          counter += collection.deleteOne(delete).getDeletedCount();
+        }
       }
       System.out.println("\tDeleted: " + counter);
+      
+      // deletes hardcoded values
+//      for(ObjectId id : toDelete) { 
+//        BasicDBObject delete = new BasicDBObject();
+//        delete.put("_id", id);
+//        counter += collection.deleteOne(delete).getDeletedCount();
+//      }
+//      System.out.println("\tDeleted: " + counter);
 
       return Status.OK;
 
