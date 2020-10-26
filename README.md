@@ -15,28 +15,26 @@ To build the full distribution, with all database bindings:
 To build a single database binding:
 
     mvn -pl com.yahoo.ycsb:mongodb-binding -am clean package -DskipTests
-    
-Memcached
---------------------
-
-Ensure memcached is running before running GeoYCSB.
-
-    memcached -m 1024
 
 Executing Benchmark
 --------------------
 
-MongoDB (Microbenchmark)
+1. MongoDB
 
 ./bin/ycsb load mongodb -P workloads/geo/workloadga -p mongodb.url="mongodb://localhost:27017/grafittiDB?w=1" -p mongodb.auth="true"
 
 ./bin/ycsb run mongodb -P workloads/geo/workloadga -p mongodb.url="mongodb://localhost:27017/grafittiDB?w=1" -p mongodb.auth="true"
 
-MongoDB (Macrobenchmark)
+2. Couchbase:
 
-./bin/ycsb load mongodb -P workloads/geo/workloadgm1 -p mongodb.url="mongodb://localhost:27017/grafittiDB?w=1" -p mongodb.auth="true"
+./bin/ycsb load couchbase2 -P workloads/geo/workloadga -p couchbase.host="localhost:8091"
 
-./bin/ycsb run mongodb -P workloads/geo/workloadgm1 -p mongodb.url="mongodb://localhost:27017/grafittiDB?w=1" -p mongodb.auth="true"
+./bin/ycsb run couchbase2 -P workloads/geo/workloadga -p couchbase.host="localhost:8091"
+
+Preprocessing Script to generate files for Couchbase to load data:
+-------------------------------------------------------------------
+
+awk -F'\t' '$1!=prev{close(out); out=NR".txt"; prev=$1} {sub(/[^\t]+\t/,""); print > out}' Graffiti_Abatement_IncidentsLine.json 
     
 Yahoo! Cloud System Benchmark (YCSB)
 ====================================
