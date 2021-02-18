@@ -31,21 +31,21 @@ public class MemcachedGenerator extends ParameterGenerator {
     super(p);
     try {
       client = createMemcachedClient(memHost, Integer.parseInt(memPort));
-      String prefix = GEO_DOCUMENT_PREFIX_INCIDENTS + GEO_SYSTEMFIELD_DELIMITER;
+      String prefix = GEO_DOCUMENT_PREFIX_COUNTIES + GEO_SYSTEMFIELD_DELIMITER;
 
-      if (client.get(prefix + GEO_SYSTEMFIELD_TOTALDOCS_COUNT_INCIDENTS) == null){
-        client.add(prefix + GEO_SYSTEMFIELD_TOTALDOCS_COUNT_INCIDENTS, 0, totalDocs);
+      if (client.get(prefix + GEO_SYSTEMFIELD_TOTALDOCS_COUNT) == null){
+        client.add(prefix + GEO_SYSTEMFIELD_TOTALDOCS_COUNT, 0, totalDocs);
       }
       int insertOffset = Integer.parseInt(p.getProperty(CoreWorkload.INSERT_START_PROPERTY,
           CoreWorkload.INSERT_START_PROPERTY_DEFAULT));
 
-      if (client.get(prefix + GEO_SYSTEMFIELD_INSERTDOC_COUNTER_INCIDENTS) == null) {
-        client.add(prefix + GEO_SYSTEMFIELD_INSERTDOC_COUNTER_INCIDENTS, 0,
+      if (client.get(prefix + GEO_SYSTEMFIELD_INSERTDOC_COUNTER) == null) {
+        client.add(prefix + GEO_SYSTEMFIELD_INSERTDOC_COUNTER, 0,
             String.valueOf(Integer.parseInt(totalDocs) + 1 + insertOffset));
       }
       
-      if (client.get(prefix + GEO_SYSTEMFIELD_STORAGEDOCS_COUNT_INCIDENTS) == null) {
-        client.add(prefix + GEO_SYSTEMFIELD_STORAGEDOCS_COUNT_INCIDENTS, 0, "0");
+      if (client.get(prefix + GEO_SYSTEMFIELD_STORAGEDOCS_COUNT) == null) {
+        client.add(prefix + GEO_SYSTEMFIELD_STORAGEDOCS_COUNT, 0, "0");
       }
 
     } catch (Exception e) {
@@ -58,61 +58,49 @@ public class MemcachedGenerator extends ParameterGenerator {
    *  Constructor for a memcached client containing 3 tables' worth of data. 
    */
   public MemcachedGenerator(Properties p, String memHost, String memPort, 
-      String totalDocs1, String totalDocs2, String totalDocs3) throws Exception {
+      String totalDocs1, String totalDocs2) throws Exception {
     super(p);
     try {
       
-      /* Incidents collection */
+      /* COUNTIES collection */
       client = createMemcachedClient(memHost, Integer.parseInt(memPort));
-      String prefix = GEO_DOCUMENT_PREFIX_INCIDENTS + GEO_SYSTEMFIELD_DELIMITER;
+      String prefix = GEO_DOCUMENT_PREFIX_COUNTIES + GEO_SYSTEMFIELD_DELIMITER;
 
-      if (client.get(prefix + GEO_SYSTEMFIELD_TOTALDOCS_COUNT_INCIDENTS) == null) {
-        client.add(prefix + GEO_SYSTEMFIELD_TOTALDOCS_COUNT_INCIDENTS, 0, totalDocs1);
+      if (client.get(prefix + GEO_SYSTEMFIELD_TOTALDOCS_COUNT) == null) {
+        client.add(prefix + GEO_SYSTEMFIELD_TOTALDOCS_COUNT, 0, totalDocs1);
       }
       int insertOffset = Integer.parseInt(p.getProperty(CoreWorkload.INSERT_START_PROPERTY,
           CoreWorkload.INSERT_START_PROPERTY_DEFAULT));
 
-      if (client.get(prefix + GEO_SYSTEMFIELD_INSERTDOC_COUNTER_INCIDENTS) == null) {
-        client.add(prefix + GEO_SYSTEMFIELD_INSERTDOC_COUNTER_INCIDENTS, 0,
+      if (client.get(prefix + GEO_SYSTEMFIELD_INSERTDOC_COUNTER) == null) {
+        client.add(prefix + GEO_SYSTEMFIELD_INSERTDOC_COUNTER, 0,
             String.valueOf(Integer.parseInt(totalDocs1) + 1 + insertOffset));
       }
 
-      if (client.get(prefix + GEO_SYSTEMFIELD_STORAGEDOCS_COUNT_INCIDENTS) == null) {
-        client.add(prefix + GEO_SYSTEMFIELD_STORAGEDOCS_COUNT_INCIDENTS, 0, "0");
+      if (client.get(prefix + GEO_SYSTEMFIELD_STORAGEDOCS_COUNT) == null) {
+        client.add(prefix + GEO_SYSTEMFIELD_STORAGEDOCS_COUNT, 0, "0");
       }
       
-      /* Schools collection */
-      prefix = GEO_DOCUMENT_PREFIX_SCHOOLS + GEO_SYSTEMFIELD_DELIMITER;
-      
-      if (client.get(prefix + GEO_SYSTEMFIELD_TOTALDOCS_COUNT_SCHOOLS) == null) {
-        client.add(prefix + GEO_SYSTEMFIELD_TOTALDOCS_COUNT_SCHOOLS, 0, totalDocs2);
+      if (client.get(prefix + GEO_SYSTEMFIELD_STORAGEGEO_COUNT) == null) {
+        client.add(prefix + GEO_SYSTEMFIELD_STORAGEGEO_COUNT, 0, "0");
       }
       
-      if (client.get(prefix + GEO_SYSTEMFIELD_INSERTDOC_COUNTER_SCHOOLS) == null) {
-        client.add(prefix + GEO_SYSTEMFIELD_INSERTDOC_COUNTER_SCHOOLS, 0,
+      /* ROUTES collection */
+      prefix = GEO_DOCUMENT_PREFIX_ROUTES + GEO_SYSTEMFIELD_DELIMITER;
+      
+      if (client.get(prefix + GEO_SYSTEMFIELD_TOTALDOCS_COUNT) == null) {
+        client.add(prefix + GEO_SYSTEMFIELD_TOTALDOCS_COUNT, 0, totalDocs2);
+      }
+      
+      if (client.get(prefix + GEO_SYSTEMFIELD_INSERTDOC_COUNTER) == null) {
+        client.add(prefix + GEO_SYSTEMFIELD_INSERTDOC_COUNTER, 0,
             String.valueOf(Integer.parseInt(totalDocs2) + 1 + insertOffset));
       }
 
-      if (client.get(prefix + GEO_SYSTEMFIELD_STORAGEDOCS_COUNT_SCHOOLS) == null) {
-        client.add(prefix + GEO_SYSTEMFIELD_STORAGEDOCS_COUNT_SCHOOLS, 0, "0");
+      if (client.get(prefix + GEO_SYSTEMFIELD_STORAGEDOCS_COUNT) == null) {
+        client.add(prefix + GEO_SYSTEMFIELD_STORAGEDOCS_COUNT, 0, "0");
       }
       
-      /* Buildings collection */
-      prefix = GEO_DOCUMENT_PREFIX_BUILDINGS + GEO_SYSTEMFIELD_DELIMITER;
-      
-      if (client.get(prefix + GEO_SYSTEMFIELD_TOTALDOCS_COUNT_BUILDINGS) == null) {
-        client.add(prefix + GEO_SYSTEMFIELD_TOTALDOCS_COUNT_BUILDINGS, 0, totalDocs3);
-      }
-      
-      if (client.get(prefix + GEO_SYSTEMFIELD_INSERTDOC_COUNTER_BUILDINGS) == null) {
-        client.add(prefix + GEO_SYSTEMFIELD_INSERTDOC_COUNTER_BUILDINGS, 0,
-            String.valueOf(Integer.parseInt(totalDocs3) + 1 + insertOffset));
-      }
-
-      if (client.get(prefix + GEO_SYSTEMFIELD_STORAGEDOCS_COUNT_BUILDINGS) == null) {
-        client.add(prefix + GEO_SYSTEMFIELD_STORAGEDOCS_COUNT_BUILDINGS, 0, "0");
-      }
-
     } catch (Exception e) {
       System.err.println("Memcached init error" + e.getMessage());
       throw e;

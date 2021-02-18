@@ -10,9 +10,7 @@ import site.ycsb.generator.geo.MemcachedGenerator;
 import site.ycsb.WorkloadException;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Properties;
-import java.util.Vector;
 
 /**
  * Author: Yuvraj Kanwar.
@@ -27,20 +25,15 @@ public class GeoWorkload extends CoreWorkload {
   public static final String STORAGE_PORT = "geo_storage_port";
   public static final String STORAGE_PORT_DEFAULT = "11211";
   public static final String TOTAL_DOCS = "totalrecordcount";
-  public static final String TOTAL_DOCS_DEFAULT = "13348";
+  public static final String TOTAL_DOCS_DEFAULT = "118899";
   public static final String DOCS_START_VALUE = "1001";
   
   /* Additional tables required for macro-benchmarks */
   public static final String TABLE2NAME_PROPERTY = "table2";
-  public static final String TABLE2NAME_PROPERTY_DEFAULT = "schools";
-  public static final String TABLE3NAME_PROPERTY = "table3";
-  public static final String TABLE3NAME_PROPERTY_DEFAULT = "buildings";  
+  public static final String TABLE2NAME_PROPERTY_DEFAULT = "routes";
   public static final String TOTAL_DOCS_TABLE2 = "table2_totalrecordcount";
-  public static final String TOTAL_DOCS_DEFAULT_TABLE2 = "34";
-  public static final String TOTAL_DOCS_TABLE3 = "table3_totalrecordcount";
-  public static final String TOTAL_DOCS_DEFAULT_TABLE3 = "55697";
+  public static final String TOTAL_DOCS_DEFAULT_TABLE2 = "26715";
   protected String table2;
-  protected String table3;
   /*-------------------------------------------------*/
 
   public static final String RECORD_COUNT = "recordcount";
@@ -100,12 +93,12 @@ public class GeoWorkload extends CoreWorkload {
   /*--------------------------------------------*/
   
   /* Additional variables for synthesizing data */
-  public static final double LAT_OFFSET = 0.1458;
-  public static final double LONG_OFFSET = 0.10437;
-  public static final double LAT_MIN = 33.3199;
-  public static final double LAT_MAX = 33.4657;
-  public static final double LONG_MIN = -111.97852;
-  public static final double LONG_MAX = -111.87415;
+  public static final double LAT_OFFSET = 14.5219043;
+  public static final double LONG_OFFSET = 16.1346741;
+  public static final double LAT_MIN = 31.0295791692;
+  public static final double LAT_MAX = 45.5514834662;
+  public static final double LONG_MIN = 129.408463169;
+  public static final double LONG_MAX = 145.543137242;
   public static final int GRID_COLS = 6;
   public static final int GRID_ROWS = 10;
   /*--------------------------------------------*/
@@ -119,14 +112,11 @@ public class GeoWorkload extends CoreWorkload {
     String totalDocs = p.getProperty(TOTAL_DOCS, TOTAL_DOCS_DEFAULT);
     try {
       String table2temp = p.getProperty(TABLE2NAME_PROPERTY, null);
-      String table3temp = p.getProperty(TABLE3NAME_PROPERTY, null);
       // use additional tables
-      if(table2temp != null && table3temp != null) {
+      if(table2temp != null) {
         table2 = table2temp;
-        table3 = table3temp;
         String totalDocs2 = p.getProperty(TOTAL_DOCS_TABLE2, TOTAL_DOCS_DEFAULT_TABLE2);
-        String totalDocs3 = p.getProperty(TOTAL_DOCS_TABLE3, TOTAL_DOCS_DEFAULT_TABLE3);
-        MemcachedGenerator mcache = new MemcachedGenerator(p, memHost, memPort, totalDocs, totalDocs2, totalDocs3);
+        MemcachedGenerator mcache = new MemcachedGenerator(p, memHost, memPort, totalDocs, totalDocs2);
         
         if(threadcount > 1) {
           System.out.println("\tTHREADID: " + mythreadid);
@@ -158,8 +148,8 @@ public class GeoWorkload extends CoreWorkload {
   public boolean doInsert(GeoDB db, Object threadstate) {
 	  //System.out.println("\n\n\n\n\n\n***** here is in load phase? " + recordCount);
     Status status;
-    status = (table2 != null && table3 != null) ? 
-        db.geoLoad(table, table2, table3, (MemcachedGenerator) threadstate, recordCount)
+    status = (table2 != null) ? 
+        db.geoLoad(table, table2, (MemcachedGenerator) threadstate, recordCount)
         : db.geoLoad(table, (MemcachedGenerator) threadstate, recordCount);
     return null != status && status.isOk();
   }
@@ -175,45 +165,45 @@ public class GeoWorkload extends CoreWorkload {
     MemcachedGenerator  generator = (MemcachedGenerator) threadstate;
     System.out.println(operation);
     switch (operation) {
-    case "READ":
-      doTransactionRead(db);
-      break;
-    case "UPDATE":
-      doTransactionUpdate(db);
-      break;
-    case "INSERT":
-      doTransactionInsert(db);
-      break;
-    case "GEO_INSERT":
-      doTransactionGeoInsert(db, generator);
-      break;
-    case "GEO_UPDATE":
-      doTransactionGeoUpdate(db, generator);
-      break;
-    case "GEO_NEAR":
-      doTransactionGeoNear(db, generator);
-      break;
-    case "GEO_BOX":
-      doTransactionGeoBox(db, generator);
-      break;
+//    case "READ":
+//      doTransactionRead(db);                      /*--------------------NOT USED--------------------*/
+//      break;
+//    case "UPDATE":
+//      doTransactionUpdate(db);                    /*--------------------NOT USED--------------------*/
+//      break;
+//    case "INSERT":
+//      doTransactionInsert(db);                    /*--------------------NOT USED--------------------*/
+//      break;
+//    case "GEO_INSERT":
+//      doTransactionGeoInsert(db, generator);      /*--------------------NOT USED--------------------*/
+//      break;
+//    case "GEO_UPDATE":
+//      doTransactionGeoUpdate(db, generator);      /*--------------------NOT USED--------------------*/
+//      break;
+//    case "GEO_NEAR":
+//      doTransactionGeoNear(db, generator);        /*--------------------NOT USED--------------------*/
+//      break;
+//    case "GEO_BOX":
+//      doTransactionGeoBox(db, generator);         /*--------------------NOT USED--------------------*/
+//      break;
     case "GEO_INTERSECT":
       doTransactionGeoIntersect(db, generator);
       break;
-    case "GEO_SCAN":
-      doTransactionGeoScan(db, generator);
-      break;
-    case "GEO_CASE_GRAFFITI_BY_SCHOOLS":
-      doTransactionGeoCase1(db, generator);
-      break;
-    case "GEO_CASE_GRAFFITI_BY_DENSITY":
-      doTransactionGeoCase2(db, generator);
-      break;
-    case "GEO_CASE_GRAFFITI_BY_HIGH_TRAFFIC":
-      doTransactionGeoCase3(db, generator);
-      break;
-    case "GEO_CASE_CLEAN_GRAFFITI":
-      doTransactionGeoCase4(db, generator);
-      break;
+//    case "GEO_SCAN":
+//      doTransactionGeoScan(db, generator);        /*--------------------NOT USED--------------------*/
+//      break;
+//    case "GEO_CASE_GRAFFITI_BY_SCHOOLS":
+//      doTransactionGeoCase1(db, generator);       /*--------------------NOT USED--------------------*/
+//      break;
+//    case "GEO_CASE_GRAFFITI_BY_DENSITY":
+//      doTransactionGeoCase2(db, generator);       /*--------------------NOT USED--------------------*/
+//      break;
+//    case "GEO_CASE_GRAFFITI_BY_HIGH_TRAFFIC":
+//      doTransactionGeoCase3(db, generator);       /*--------------------NOT USED--------------------*/
+//      break;
+//    case "GEO_CASE_CLEAN_GRAFFITI":
+//      doTransactionGeoCase4(db, generator);       /*--------------------NOT USED--------------------*/
+//      break;
     default:
       doTransactionReadModifyWrite(db);
     }
@@ -222,134 +212,134 @@ public class GeoWorkload extends CoreWorkload {
   }
 
 
-  public void doTransactionGeoInsert(GeoDB db, ParameterGenerator generator) {
-    try {
-      HashMap<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
-      db.geoInsert(table, cells, generator);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      ex.printStackTrace(System.out);
-    }
-  }
-
-  public void doTransactionGeoUpdate(GeoDB db, ParameterGenerator generator) {
-    try {
-      HashMap<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
-      db.geoUpdate(table, cells, generator);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      ex.printStackTrace(System.out);
-    }
-  }
-
-  public void doTransactionGeoNear(GeoDB db, ParameterGenerator generator) {
-    try {
-      HashMap<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
-      db.geoNear(table, cells, generator);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      ex.printStackTrace(System.out);
-    }
-  }
-
-  public void doTransactionGeoBox(GeoDB db, ParameterGenerator generator) {
-    try {
-      HashMap<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
-      db.geoBox(table, cells, generator);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      ex.printStackTrace(System.out);
-    }
-  }
+//  public void doTransactionGeoInsert(GeoDB db, ParameterGenerator generator) {
+//    try {
+//      HashMap<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
+//      db.geoInsert(table, cells, generator);
+//    } catch (Exception ex) {
+//      ex.printStackTrace();
+//      ex.printStackTrace(System.out);
+//    }
+//  }
+//
+//  public void doTransactionGeoUpdate(GeoDB db, ParameterGenerator generator) {
+//    try {
+//      HashMap<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
+//      db.geoUpdate(table, cells, generator);
+//    } catch (Exception ex) {
+//      ex.printStackTrace();
+//      ex.printStackTrace(System.out);
+//    }
+//  }
+//
+//  public void doTransactionGeoNear(GeoDB db, ParameterGenerator generator) {
+//    try {
+//      HashMap<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
+//      db.geoNear(table, cells, generator);
+//    } catch (Exception ex) {
+//      ex.printStackTrace();
+//      ex.printStackTrace(System.out);
+//    }
+//  }
+//
+//  public void doTransactionGeoBox(GeoDB db, ParameterGenerator generator) {
+//    try {
+//      HashMap<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
+//      db.geoBox(table, cells, generator);
+//    } catch (Exception ex) {
+//      ex.printStackTrace();
+//      ex.printStackTrace(System.out);
+//    }
+//  }
 
   public void doTransactionGeoIntersect(GeoDB db, ParameterGenerator generator) {
     try {
       HashMap<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
-      db.geoIntersect(table, cells, generator);
+      db.geoIntersect(table2, cells, generator);
     } catch (Exception ex) {
       ex.printStackTrace();
       ex.printStackTrace(System.out);
     }
   }
 
-  public void doTransactionGeoScan(GeoDB db, ParameterGenerator generator) {
-    try {
-      db.geoScan(table, new Vector<HashMap<String, ByteIterator>>(), generator);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      ex.printStackTrace(System.out);
-    }
-  }
-  
-  /* USE CASE OPERATIONS */
-  public void doTransactionGeoCase1(GeoDB db, ParameterGenerator generator) {
-    HashMap<String, Vector<HashMap<String, ByteIterator>>> cells = new HashMap<>();
-    try {
-      db.geoUseCase1(table, cells, generator);
-      
-      // print result for confirmation
-      for(String school : cells.keySet()) {
-        System.out.println("\tGraffiti around " + school + ": " + cells.get(school).size());
-      }
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      ex.printStackTrace(System.out);
-    }
-  }
-  
-  public void doTransactionGeoCase2(GeoDB db, ParameterGenerator generator) {
-    HashMap<String, Vector<HashMap<String, ByteIterator>>> cells = new HashMap<>();
-    try {
-      db.geoUseCase2(table, cells, generator);
-      // print result for confirmation
-      for(String key : cells.keySet()) {
-        System.out.println("\t Graffiti in " + key + ": " + cells.get(key).size());
-      }
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      ex.printStackTrace(System.out);
-    }
-  }
-  
-  public void doTransactionGeoCase3(GeoDB db, ParameterGenerator generator) {
-    HashMap<String, Vector<HashMap<String, ByteIterator>>> cells = new HashMap<>();
-    try {
-      db.geoUseCase3(table3, table, cells, generator);
-      // print result for confirmation
-      
-      int counter = 1;
-      for(String key : cells.keySet()) {
-        System.out.println("Rank " + counter + " traffic: " + cells.get(key).size());
-        counter++;
-      }
-     
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      ex.printStackTrace(System.out);
-    }
-  }
-  
-  public void doTransactionGeoCase4(GeoDB db, ParameterGenerator generator) {
-    HashSet<Integer> deleted = new HashSet<Integer>();
-    try {
-      switch(cleanBasedOn) {
-      case GEO_CASE1_PROPERTY:
-        generator.buildGeoPredicateCase1();
-        break;
-      case GEO_CASE2_PROPERTY:
-        generator.buildGeoPredicateCase3();
-        break;
-      case GEO_CASE3_PROPERTY:
-        generator.buildGeoPredicateCase3();
-        break;
-      default:
-        break;
-      }
-      db.geoUseCase4(table, cleanBasedOn, deleted, generator);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-  }
+//  public void doTransactionGeoScan(GeoDB db, ParameterGenerator generator) {
+//    try {
+//      db.geoScan(table, new Vector<HashMap<String, ByteIterator>>(), generator);
+//    } catch (Exception ex) {
+//      ex.printStackTrace();
+//      ex.printStackTrace(System.out);
+//    }
+//  }
+//  
+//  /* USE CASE OPERATIONS */
+//  public void doTransactionGeoCase1(GeoDB db, ParameterGenerator generator) {
+//    HashMap<String, Vector<HashMap<String, ByteIterator>>> cells = new HashMap<>();
+//    try {
+//      db.geoUseCase1(table, cells, generator);
+//      
+//      // print result for confirmation
+//      for(String school : cells.keySet()) {
+//        System.out.println("\tGraffiti around " + school + ": " + cells.get(school).size());
+//      }
+//    } catch (Exception ex) {
+//      ex.printStackTrace();
+//      ex.printStackTrace(System.out);
+//    }
+//  }
+//  
+//  public void doTransactionGeoCase2(GeoDB db, ParameterGenerator generator) {
+//    HashMap<String, Vector<HashMap<String, ByteIterator>>> cells = new HashMap<>();
+//    try {
+//      db.geoUseCase2(table, cells, generator);
+//      // print result for confirmation
+//      for(String key : cells.keySet()) {
+//        System.out.println("\t Graffiti in " + key + ": " + cells.get(key).size());
+//      }
+//    } catch (Exception ex) {
+//      ex.printStackTrace();
+//      ex.printStackTrace(System.out);
+//    }
+//  }
+//  
+//  public void doTransactionGeoCase3(GeoDB db, ParameterGenerator generator) {
+//    HashMap<String, Vector<HashMap<String, ByteIterator>>> cells = new HashMap<>();
+//    try {
+//      db.geoUseCase3(table3, table, cells, generator);
+//      // print result for confirmation
+//      
+//      int counter = 1;
+//      for(String key : cells.keySet()) {
+//        System.out.println("Rank " + counter + " traffic: " + cells.get(key).size());
+//        counter++;
+//      }
+//     
+//    } catch (Exception ex) {
+//      ex.printStackTrace();
+//      ex.printStackTrace(System.out);
+//    }
+//  }
+//  
+//  public void doTransactionGeoCase4(GeoDB db, ParameterGenerator generator) {
+//    HashSet<Integer> deleted = new HashSet<Integer>();
+//    try {
+//      switch(cleanBasedOn) {
+//      case GEO_CASE1_PROPERTY:
+//        generator.buildGeoPredicateCase1();
+//        break;
+//      case GEO_CASE2_PROPERTY:
+//        generator.buildGeoPredicateCase3();
+//        break;
+//      case GEO_CASE3_PROPERTY:
+//        generator.buildGeoPredicateCase3();
+//        break;
+//      default:
+//        break;
+//      }
+//      db.geoUseCase4(table, cleanBasedOn, deleted, generator);
+//    } catch (Exception ex) {
+//      ex.printStackTrace();
+//    }
+//  }
 
 
   /**

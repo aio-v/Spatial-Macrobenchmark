@@ -133,8 +133,7 @@ public abstract class GeoDB extends DB {
   }
   
   // a geoLoad for loading multiple tables
-  public abstract Status geoLoad(String table1, String table2, String table3,
-      ParameterGenerator generator, Double recordCount);
+  public abstract Status geoLoad(String table1, String table2, ParameterGenerator generator, Double recordCount);
 
   public Status geoInsert(String table, HashMap<String, ByteIterator> result, ParameterGenerator gen)  {
     System.err.println("geoInsert not implemented");
@@ -173,16 +172,16 @@ public abstract class GeoDB extends DB {
   
 
   /* Use case operations for macro-benchmarks */
-  
-  public abstract Status geoUseCase1(String table, HashMap<String, 
-      Vector<HashMap<String, ByteIterator>>> result, ParameterGenerator gen);
-  
-  public abstract Status geoUseCase2(String table, HashMap<String, 
-      Vector<HashMap<String, ByteIterator>>> result, ParameterGenerator gen);
-  
-  public abstract Status geoUseCase3(String table1, String table2, HashMap<String,
-      Vector<HashMap<String, ByteIterator>>> result, ParameterGenerator gen);
-  
-  public abstract Status geoUseCase4(String table, String operation, Set<Integer> deleted, ParameterGenerator gen);
+  /*--------------------NOT USED--------------------*/
+//  public abstract Status geoUseCase1(String table, HashMap<String, 
+//      Vector<HashMap<String, ByteIterator>>> result, ParameterGenerator gen);
+//  
+//  public abstract Status geoUseCase2(String table, HashMap<String, 
+//      Vector<HashMap<String, ByteIterator>>> result, ParameterGenerator gen);
+//  
+//  public abstract Status geoUseCase3(String table1, String table2, HashMap<String,
+//      Vector<HashMap<String, ByteIterator>>> result, ParameterGenerator gen);
+//  
+//  public abstract Status geoUseCase4(String table, String operation, Set<Integer> deleted, ParameterGenerator gen);
 
 }

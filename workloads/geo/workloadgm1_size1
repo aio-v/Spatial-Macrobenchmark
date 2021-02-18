@@ -1,5 +1,5 @@
 
-recordcount=80
+recordcount=3
 operationcount=800
 
 # not for geo
@@ -11,7 +11,7 @@ scanproportion=0
 insertproportion=0
 
 
-workload=com.yahoo.ycsb.workloads.geo.GeoWorkload
+workload=site.ycsb.workloads.geo.GeoWorkload
 
 
 # Workload settings for geo
@@ -21,20 +21,6 @@ geo_near=0
 geo_box=0
 geo_intersect=0
 geo_scan=0
-
-# Macro benchmark operations
-# Find school with highest concentration of graffiti nearby
-geo_case_graffiti_by_schools=1.0
-
-# Find graffiti density per cell of a grid
-geo_case_graffiti_density=0.0
-
-# Find building density per cell of a grid (high traffic area) and graffiti within top 5 areas
-geo_case_graffiti_by_high_traffic=0.0
-
-# Find and clean graffiti (result of one of the previous 3 use cases) [write operation]
-geo_case_clean_graffiti=0.0
-
 
 # zipfian, uniform, latest
 geo_request_distribution=uniform
@@ -50,7 +36,4 @@ geo_offset_max = 10
 
 
 # Additional settings required for macro benchmarks
-table2=schools
-table3=buildings
-geo_clean_based_on=geo_case_graffiti_by_schools
-datasize=1
+table2=routes

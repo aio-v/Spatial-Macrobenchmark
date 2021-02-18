@@ -18,5 +18,5 @@
 /**
  * The YCSB workloads.
  */
-package com.yahoo.ycsb.workloads.geo;
+package site.ycsb.workloads.geo;
 
