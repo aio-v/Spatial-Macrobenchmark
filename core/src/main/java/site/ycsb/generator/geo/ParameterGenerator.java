@@ -70,8 +70,6 @@ public abstract class ParameterGenerator {
   public static final String GEO_SYSTEMFIELD_STORAGEGEO_COUNT = "GEO_storage_geo_count";
   
   // Document fields in case an attribute is needed for query/projection
-  private static final String GEO_FIELD_ID = "_id";
-  
   private static final String GEO_FIELD_COUNTIES_TYPE = "type";
   private static final String GEO_FIELD_COUNTIES_ID = "id";
   private static final String GEO_FIELD_COUNTIES_PROPERTIES = "properties";
@@ -104,7 +102,6 @@ public abstract class ParameterGenerator {
   
   private final Map<String, Set<String>> allGeoFields = new HashMap<String, Set<String>>() {{
     put(GEO_DOCUMENT_PREFIX_COUNTIES, new HashSet<String>() {{
-        add(GEO_FIELD_ID);
         add(GEO_FIELD_COUNTIES_TYPE);
         add(GEO_FIELD_COUNTIES_ID);
         add(GEO_FIELD_COUNTIES_PROPERTIES);
@@ -123,7 +120,6 @@ public abstract class ParameterGenerator {
         add(GEO_FIELD_COUNTIES_GEOMETRY_OBJ_COORDINATES);
       }});
     put(GEO_DOCUMENT_PREFIX_ROUTES, new HashSet<String>() {{
-        add(GEO_FIELD_ID);
         add(GEO_FIELD_ROUTES_TYPE);
         add(GEO_FIELD_ROUTES_PROPERTIES);
         add(GEO_FIELD_ROUTES_PROPERTIES_OBJ_N07_001);
@@ -433,11 +429,11 @@ public abstract class ParameterGenerator {
   
   
   /**
-   * Gets a document from memcached and prepares it to become the predicate of a GeoInsert.
+   * Gets a document from memcached and prepares it to become the predicate of a GeoLoad.
    * @param table
    * @return the new doc body
    */
-  public String buildGeoLoadDocument(String table, int key, String generatedId) {
+  public String buildGeoLoadDocument(String table, int key) {
     String storageKey = "";
     String keyPrefix = "";
     String docBody = null;
@@ -461,7 +457,7 @@ public abstract class ParameterGenerator {
     }
     
     // Synthesize data
-    String newDocBody = synthesize(table, docBody, generatedId);
+    String newDocBody = synthesize(table, docBody);
     
     // there is a chance to add the geometry to memcached as a potential parameter:
     rollChanceToAddDocAsParameter(table, newDocBody);
@@ -470,13 +466,12 @@ public abstract class ParameterGenerator {
   }
   
   /**
-   * Synthesize data by shifting geometry coordinates and changing object ID.
+   * Synthesize data by shifting geometry coordinates.
    * @param jsonString
    * @return
    */
-  private String synthesize(String table, String jsonString, String generatedId) {
+  private String synthesize(String table, String jsonString) {
     JSONObject obj = new JSONObject(jsonString);
-    String idField = GEO_FIELD_ID;
     String geometryField = "";
     String coordinatesField = "";
     String typeField = "";
@@ -497,12 +492,6 @@ public abstract class ParameterGenerator {
     default:
       break;
     }
-    // replace ObjectID with generated ID
-    if(obj.has(idField) && !obj.isNull(idField)) {
-      // set _id to new, unique generated id
-      obj.getJSONObject(idField).put("$oid", generatedId);
-    }
-    
     // check if geometry field exists
     if(obj.has(geometryField) && !obj.isNull(geometryField)) {
       // get coordinates array

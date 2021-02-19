@@ -158,7 +158,7 @@ public class MongoDbClient extends GeoDB {
     System.out.println("PRELOADING HERE  " + table);
     try {
       MongoCollection<Document> collection = database.getCollection(table);
-      MongoCursor<Document> cursor = collection.find().iterator();
+      MongoCursor<Document> cursor = collection.find().projection(new Document("_id", 0)).iterator();
       
       while (cursor.hasNext()) {
         Document data = cursor.next();
@@ -222,9 +222,8 @@ public class MongoDbClient extends GeoDB {
         String nextDocObjId = generator.getNextKey(table);
         
         // Synthesize new document
-        ObjectId generatedId = new ObjectId();
         String newDocBody = generator.buildGeoLoadDocument(table, 
-            Integer.parseInt(nextDocObjId), generatedId.toHexString());
+            Integer.parseInt(nextDocObjId));
         
         if (newDocBody == null) {
           System.out.println(table);
