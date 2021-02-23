@@ -31,9 +31,9 @@ public abstract class ParameterGenerator {
   private int totalDocsCountCounties = 0;
   private int totalDocsCountRoutes = 0;
   
-  private AtomicInteger nextLoadDocKeyCounties = new AtomicInteger(0);
-  private AtomicInteger nextLoadDocKeyRoutes = new AtomicInteger(0);
-  private AtomicInteger nextGeoKeyCounties = new AtomicInteger(0);  
+  private static AtomicInteger nextLoadDocKeyCounties = new AtomicInteger(0);
+  private static AtomicInteger nextLoadDocKeyRoutes = new AtomicInteger(0);
+  private static AtomicInteger nextGeoKeyCounties = new AtomicInteger(0);  
   
   private int nextInsertDocKeyCounties = 0;
   private int nextInsertDocKeyRoutes = 0;
