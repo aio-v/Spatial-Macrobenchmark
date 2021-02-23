@@ -312,8 +312,6 @@ public abstract class ParameterGenerator {
         docGeometry = geoObj.toString();
         
         prefix = GEO_DOCUMENT_PREFIX_COUNTIES + GEO_SYSTEMFIELD_DELIMITER + GEO_SYSTEMFIELD_GEOMETRY;
-        storageCount = increment(GEO_DOCUMENT_PREFIX_COUNTIES + GEO_SYSTEMFIELD_DELIMITER + GEO_SYSTEMFIELD_STORAGEGEO_COUNT, 1);    // increment counter
-        nextGeoKey = nextGeoKeyCounties.getAndIncrement();
       }
       break;
     default:
@@ -322,8 +320,14 @@ public abstract class ParameterGenerator {
     
     // add to memcached client
     // e.g. counties:::geo:::1 -> geometry json object
-    if(docGeometry != null)
+    if(docGeometry != null) {
+      nextGeoKey = nextGeoKeyCounties.getAndIncrement();
+      System.out.println("ADDED " + nextGeoKey);
+      storageCount = increment(GEO_DOCUMENT_PREFIX_COUNTIES + GEO_SYSTEMFIELD_DELIMITER + GEO_SYSTEMFIELD_STORAGEGEO_COUNT, 1);    // increment counter
       setVal(prefix + GEO_SYSTEMFIELD_DELIMITER + nextGeoKey, docGeometry);
+    } else {
+      System.out.println("FAILED TO ADD " + nextGeoKey);
+    }
     
     // returns the doc id that was just inserted
     return storageCount;
@@ -439,11 +443,11 @@ public abstract class ParameterGenerator {
     String docBody = null;
     switch(table) {
     case GEO_DOCUMENT_PREFIX_COUNTIES:
-      keyPrefix = GEO_DOCUMENT_PREFIX_COUNTIES + GEO_SYSTEMFIELD_DELIMITER + GEO_SYSTEMFIELD_DOCUMENT;
+      keyPrefix = GEO_DOCUMENT_PREFIX_COUNTIES + GEO_SYSTEMFIELD_DELIMITER;
       increment(keyPrefix + GEO_SYSTEMFIELD_INSERTDOC_COUNTER, 1);
       break;
     case GEO_DOCUMENT_PREFIX_ROUTES:
-      keyPrefix = GEO_DOCUMENT_PREFIX_ROUTES + GEO_SYSTEMFIELD_DELIMITER + GEO_SYSTEMFIELD_DOCUMENT;
+      keyPrefix = GEO_DOCUMENT_PREFIX_ROUTES + GEO_SYSTEMFIELD_DELIMITER;
       increment(keyPrefix + GEO_SYSTEMFIELD_INSERTDOC_COUNTER, 1);
       break;
     default:
