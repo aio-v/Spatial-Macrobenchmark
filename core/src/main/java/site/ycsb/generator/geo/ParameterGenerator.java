@@ -322,11 +322,8 @@ public abstract class ParameterGenerator {
     // e.g. counties:::geo:::1 -> geometry json object
     if(docGeometry != null) {
       nextGeoKey = nextGeoKeyCounties.getAndIncrement();
-      System.out.println("ADDED " + nextGeoKey);
       storageCount = increment(GEO_DOCUMENT_PREFIX_COUNTIES + GEO_SYSTEMFIELD_DELIMITER + GEO_SYSTEMFIELD_STORAGEGEO_COUNT, 1);    // increment counter
       setVal(prefix + GEO_SYSTEMFIELD_DELIMITER + nextGeoKey, docGeometry);
-    } else {
-      System.out.println("FAILED TO ADD " + nextGeoKey);
     }
     
     // returns the doc id that was just inserted
