@@ -38,7 +38,7 @@ public abstract class ParameterGenerator {
   private int nextInsertDocKeyCounties = 0;
   private int nextInsertDocKeyRoutes = 0;
   
-  private static final double CHANCE_TO_ADD_DOC_AS_PARAMETER = .10;
+  private static final double CHANCE_TO_ADD_DOC_AS_PARAMETER = .05;
   
   private Properties properties;
   private int queryLimitMin = 0;

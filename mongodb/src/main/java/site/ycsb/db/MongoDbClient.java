@@ -214,8 +214,6 @@ public class MongoDbClient extends GeoDB {
   private Status geoLoad(String table, ParameterGenerator generator) {
     try {
       System.out.println("macro");
-      MongoCollection<Document> collection = database.getCollection(table);
-      
       
       for(int i = 0; i < generator.getTotalDocsCount(table); i++) {
         // Get the next document
