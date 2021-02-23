@@ -310,7 +310,7 @@ public abstract class ParameterGenerator {
       if (jsonDoc.has(GEO_FIELD_COUNTIES_GEOMETRY) && !jsonDoc.isNull(GEO_FIELD_COUNTIES_GEOMETRY)) {
         JSONObject geoObj = jsonDoc.getJSONObject(GEO_FIELD_COUNTIES_GEOMETRY);     // extract geometry field
         docGeometry = geoObj.toString();
-        
+        System.out.println(docGeometry);
         prefix = GEO_DOCUMENT_PREFIX_COUNTIES + GEO_SYSTEMFIELD_DELIMITER + GEO_SYSTEMFIELD_GEOMETRY;
       }
       break;
@@ -325,8 +325,6 @@ public abstract class ParameterGenerator {
       System.out.println("ADDED " + nextGeoKey);
       storageCount = increment(GEO_DOCUMENT_PREFIX_COUNTIES + GEO_SYSTEMFIELD_DELIMITER + GEO_SYSTEMFIELD_STORAGEGEO_COUNT, 1);    // increment counter
       setVal(prefix + GEO_SYSTEMFIELD_DELIMITER + nextGeoKey, docGeometry);
-    } else {
-      System.out.println("FAILED TO ADD " + nextGeoKey);
     }
     
     // returns the doc id that was just inserted
