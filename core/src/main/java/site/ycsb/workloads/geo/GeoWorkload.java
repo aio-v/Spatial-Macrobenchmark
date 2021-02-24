@@ -256,6 +256,9 @@ public class GeoWorkload extends CoreWorkload {
     try {
       HashMap<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
       db.geoIntersect(table2, cells, generator);
+      for(String cell : cells.keySet()) {
+        cells.get(cell).toString();
+      }
     } catch (Exception ex) {
       ex.printStackTrace();
       ex.printStackTrace(System.out);
