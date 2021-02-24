@@ -25,7 +25,7 @@ public class GeoWorkload extends CoreWorkload {
   public static final String STORAGE_PORT = "geo_storage_port";
   public static final String STORAGE_PORT_DEFAULT = "11211";
   public static final String TOTAL_DOCS = "totalrecordcount";
-  public static final String TOTAL_DOCS_DEFAULT = "118899";
+  public static final String TOTAL_DOCS_DEFAULT = "118896";
   public static final String DOCS_START_VALUE = "1001";
   
   /* Additional tables required for macro-benchmarks */

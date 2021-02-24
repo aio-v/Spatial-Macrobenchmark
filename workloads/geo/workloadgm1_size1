@@ -1,6 +1,6 @@
 
-recordcount=48
-operationcount=800
+recordcount=3
+operationcount=1000
 
 # not for geo
 requestdistribution=uniform
@@ -19,7 +19,7 @@ geo_insert=0
 geo_update=0
 geo_near=0
 geo_box=0
-geo_intersect=0
+geo_intersect=1.0
 geo_scan=0
 
 # zipfian, uniform, latest
