@@ -276,9 +276,10 @@ public class MongoDbClient extends GeoDB {
     try {
       MongoCollection<Document> collection = database.getCollection(table);
 //      String value = gen.getGeoPredicate().getValue();
-      System.out.println("Synthesis Offset Column: " + gen.getSynthesisOffsetCols() +
-          "\tSynthesis Offset Row: " + gen.getSynthesisOffsetRows());
-      System.out.println("NEW DOC: " + value + "\n");
+//      System.out.println("Synthesis Offset Column: " + gen.getSynthesisOffsetCols() +
+//          "\tSynthesis Offset Row: " + gen.getSynthesisOffsetRows());
+//      System.out.println("NEW DOC: " + value + "\n");
+      System.out.println("GEO_INSERT");
       Document toInsert = Document.parse(value);
       collection.insertOne(toInsert);
 
