@@ -570,6 +570,8 @@ public abstract class ParameterGenerator {
     
     result.setNestedPredicateA(nestedA);
     result.setNestedPredicateC(nestedC);
+    
+    geoPredicate = result;
   }
 
   
