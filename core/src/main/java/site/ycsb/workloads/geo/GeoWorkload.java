@@ -54,6 +54,9 @@ public class GeoWorkload extends CoreWorkload {
   public static final String GEO_INTERSECT_PROPORTION_PROPERTY = "geo_intersect";
   public static final String GEO_INTERSECT_PROPORTION_PROPERTY_DEFAULT = "0.00";
 
+  public static final String GEO_WITHIN_PROPORTION_PROPERTY = "geo_within";
+  public static final String GEO_WITHIN_PROPORTION_PROPERTY_DEFAULT = "0.00";
+  
   public static final String GEO_SCAN_PROPORTION_PROPERTY = "geo_scan";
   public static final String GEO_SCAN_PROPORTION_PROPERTY_DEFAULT = "0.00";
 
@@ -391,6 +394,8 @@ public class GeoWorkload extends CoreWorkload {
         p.getProperty(GEO_BOX_PROPORTION_PROPERTY, GEO_BOX_PROPORTION_PROPERTY_DEFAULT));
     final double geoIntersect = Double.parseDouble(
         p.getProperty(GEO_INTERSECT_PROPORTION_PROPERTY, GEO_INTERSECT_PROPORTION_PROPERTY_DEFAULT));
+    final double geoWithin = Double.parseDouble(
+        p.getProperty(GEO_WITHIN_PROPORTION_PROPERTY, GEO_WITHIN_PROPORTION_PROPERTY_DEFAULT));
     final double geoScan = Double.parseDouble(
         p.getProperty(GEO_SCAN_PROPORTION_PROPERTY, GEO_SCAN_PROPORTION_PROPERTY_DEFAULT));
     
@@ -444,6 +449,10 @@ public class GeoWorkload extends CoreWorkload {
 
     if (geoIntersect > 0) {
       operationchooser.addValue(geoIntersect, "GEO_INTERSECT");
+    }
+    
+    if (geoWithin > 0) {
+      operationchooser.addValue(geoWithin, "GEO_WITHIN");
     }
 
     if (geoScan > 0) {
