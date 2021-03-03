@@ -189,6 +189,9 @@ public class GeoWorkload extends CoreWorkload {
     case "GEO_INTERSECT":
       doTransactionGeoIntersect(db, generator);
       break;
+    case "GEO_WITHIN":
+      doTransactionGeoWithin(db, generator);
+      break;
 //    case "GEO_SCAN":
 //      doTransactionGeoScan(db, generator);        /*--------------------NOT USED--------------------*/
 //      break;
@@ -256,9 +259,16 @@ public class GeoWorkload extends CoreWorkload {
     try {
       HashMap<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
       db.geoIntersect(table2, cells, generator);
-      for(String cell : cells.keySet()) {
-        cells.get(cell).toString();
-      }
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      ex.printStackTrace(System.out);
+    }
+  }
+  
+  public void doTransactionGeoWithin(GeoDB db, ParameterGenerator generator) {
+    try {
+      HashMap<String, ByteIterator> cells = new HashMap<String, ByteIterator>();
+      db.geoWithin(table2, cells, generator);
     } catch (Exception ex) {
       ex.printStackTrace();
       ex.printStackTrace(System.out);

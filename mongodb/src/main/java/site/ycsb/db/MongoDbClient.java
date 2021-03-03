@@ -442,6 +442,38 @@ public class MongoDbClient extends GeoDB {
       return Status.ERROR;
     }
   }
+  
+  // *********************  GEO Within ********************************
+
+  @Override
+  public Status geoWithin(String table, HashMap<String, ByteIterator> result, ParameterGenerator gen) {
+    try {
+      MongoCollection<Document> collection = database.getCollection(table);
+      String fieldName1 = gen.getGeoPredicate().getNestedPredicateA().getName();
+      JSONObject withinFieldValue2 = gen.getGeoPredicate().getNestedPredicateC().getValueA();
+
+      HashMap<String, Object> withinFields = new ObjectMapper()
+          .readValue(withinFieldValue2.toString(), HashMap.class);
+      Document refPoint = new Document(withinFields);
+      FindIterable<Document> findIterable = collection.find(
+          Filters.geoWithin(fieldName1, refPoint));
+      Document projection = new Document();
+      for (String field : gen.getAllGeoFields().get(table)) {
+        projection.put(field, INCLUDE);
+      }
+      findIterable.projection(projection);
+
+      Document queryResult = findIterable.first();
+
+      if (queryResult != null) {
+        geoFillMap(result, queryResult);
+      }
+      return queryResult != null ? Status.OK : Status.NOT_FOUND;
+    } catch (Exception e) {
+      System.err.println(e);
+      return Status.ERROR;
+    }
+  }
 
   // *********************  GEO Scan ********************************
   /*--------------------NOT USED--------------------*/

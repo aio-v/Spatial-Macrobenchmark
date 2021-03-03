@@ -164,6 +164,11 @@ public abstract class GeoDB extends DB {
     System.err.println("geoIntersect not implemented");
     return null;
   }
+  
+  public Status geoWithin(String table, HashMap<String, ByteIterator> result, ParameterGenerator gen)  {
+    System.err.println("geoIntersect not implemented");
+    return null;
+  }
 
   public Status geoScan(String table, Vector<HashMap<String, ByteIterator>> result, ParameterGenerator gen)  {
     System.err.println("geoScan not implemented");

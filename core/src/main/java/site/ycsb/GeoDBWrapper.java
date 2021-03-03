@@ -353,6 +353,21 @@ public class GeoDBWrapper extends GeoDB {
       return res;
     }
   }
+  
+  public Status geoWithin(String table, HashMap<String, ByteIterator> result, ParameterGenerator generator) {
+    long s = System.nanoTime();
+    generator.buildGeoReadPredicate();
+    long e = System.nanoTime();
+    try (final TraceScope span = tracer.newScope(scopeStringRead)) {
+      long ist = measurements.getIntendedtartTimeNs();
+      long st = System.nanoTime();
+      Status res = db.geoWithin(table, result, generator);
+      long en = System.nanoTime();
+      measure("GEO_WITHIN", res, ist, st, en);
+      measurements.reportStatus("GEO_WITHIN", res);
+      return res;
+    }
+  }
 
 
   /*--------------------NOT USED--------------------*/
